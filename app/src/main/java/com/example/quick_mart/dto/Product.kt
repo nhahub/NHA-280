@@ -1,6 +1,6 @@
 package com.example.quick_mart.dto
 
-data class ProductsResponseItem(
+data class Product(
     val category: Category?,
     val creationAt: String?,
     val description: String?,
