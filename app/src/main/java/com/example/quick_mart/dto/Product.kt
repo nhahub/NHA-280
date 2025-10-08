@@ -5,6 +5,7 @@ data class Product(
     val creationAt: String?,
     val description: String?,
     val id: Int?,
+    val name: String,
     val images: List<String?>?,
     val price: Int?,
     val slug: String?,
