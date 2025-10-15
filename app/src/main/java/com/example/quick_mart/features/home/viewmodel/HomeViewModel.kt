@@ -6,10 +6,13 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.quick_mart.dto.Product
+import com.example.quick_mart.features.home.repo.HomeRepository
 import com.example.quick_mart.network.API
 import kotlinx.coroutines.launch
 
-class HomeViewModel : ViewModel() {
+class HomeViewModel(
+    private val repo: HomeRepository
+) : ViewModel() {
 
 
 //    private val _products= MutableLiveData<List<Product>>()
@@ -17,7 +20,7 @@ class HomeViewModel : ViewModel() {
 
     fun getAllProducts(){
         viewModelScope.launch{
-                val response = API.apiService.getProductsResponse()
+                val response = repo.getProductsResponseFromNetwork()
                 if (response.isSuccessful) {
                     val productsList: List<Product> = response.body() ?: emptyList()
                     Log.d("products", productsList.toString())

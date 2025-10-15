@@ -15,11 +15,16 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import com.example.quick_mart.features.home.repo.HomeRepositoryImp
 import com.example.quick_mart.features.home.viewmodel.HomeViewModel
+import com.example.quick_mart.features.home.viewmodel.HomeViewModelFactory
+import com.example.quick_mart.network.RemoteDataSourceImp
 import com.example.quick_mart.ui.theme.QuickMartTheme
 
 class MainActivity : ComponentActivity() {
-    private val viewModel: HomeViewModel by viewModels()
+    private val viewModel: HomeViewModel by viewModels{
+        HomeViewModelFactory(HomeRepositoryImp( RemoteDataSourceImp()))
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
