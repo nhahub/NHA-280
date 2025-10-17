@@ -1,10 +1,13 @@
 package com.example.quick_mart.dto
+import androidx.room.Entity
+import androidx.room.PrimaryKey
 
+@Entity (tableName = "products")
 data class Product(
     val category: Category?,
     val creationAt: String?,
     val description: String?,
-    val id: Int?,
+    @PrimaryKey val id: Int,
     val images: List<String?>?,
     val price: Int?,
     val slug: String?,
