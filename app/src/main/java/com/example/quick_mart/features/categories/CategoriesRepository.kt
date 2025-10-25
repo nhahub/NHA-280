@@ -1,7 +1,6 @@
 package com.example.quick_mart.repository
 
 import com.example.quick_mart.network.API
-import com.example.quick_mart.CategoryDto.*
 
 class CategoriesRepository {
 
