@@ -70,7 +70,5 @@ dependencies {
     implementation(libs.room.ktx)
     testImplementation(libs.room.testing)
     kapt(libs.room.compiler)
-//    implementation(libs.coil.compose)
-//    implementation(libs.coil.network.okhttp)
     implementation("io.coil-kt:coil-compose:2.7.0")
 }

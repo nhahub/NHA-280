@@ -39,8 +39,6 @@ room-compiler= { group = "androidx.room", name = "room-compiler", version.ref = 
 room-ktx= { group = "androidx.room", name = "room-ktx", version.ref = "roomVersion" }
 room-testing= { group = "androidx.room", name = "room-testing", version.ref = "roomVersion" }
 #room-runtime= { group = "androidx.room", name = "", version.ref = "roomVersion" }
-#coil-compose= {group = "io.coil-kt.coil3",name = "coil-compose",version.ref = "coil"}
-#coil-network-okhttp= {group = "io.coil-kt.coil3",name = "coil-network-okhttp",version.ref = "coil"}
 
 
 
