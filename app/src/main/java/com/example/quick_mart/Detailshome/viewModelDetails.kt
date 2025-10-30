@@ -12,23 +12,4 @@ import kotlinx.coroutines.launch
 
 class ViewModelDetails : ViewModel() {
 
-    private val _product = MutableLiveData<Product>()
-    val productdetails: LiveData<Product> get() = _product
-
-//    fun getProductById() {
-//        viewModelScope.launch(Dispatchers.IO) {
-//            try {
-//                val response = apiService.getProductById()
-//                if (response.isSuccessful) {
-//                    response.body()?.let {
-//                        _product.postValue(it)
-//                    }
-//                } else {
-//                    Log.e("API", "Error: ${response.errorBody()?.string()}")
-//                }
-//            } catch (e: Exception) {
-//                Log.e("API", "Exception: ${e.localizedMessage}", e)
-//            }
-//        }
-//    }
 }

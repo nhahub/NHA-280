@@ -12,7 +12,7 @@ android {
     defaultConfig {
         applicationId = "com.example.quick_mart"
         minSdk = 27
-        targetSdk = 36
+        targetSdk = 35
         versionCode = 1
         versionName = "1.0"
 
@@ -70,4 +70,7 @@ dependencies {
     implementation(libs.room.ktx)
     testImplementation(libs.room.testing)
     kapt(libs.room.compiler)
+//    implementation(libs.coil.compose)
+//    implementation(libs.coil.network.okhttp)
+    implementation("io.coil-kt:coil-compose:2.7.0")
 }
