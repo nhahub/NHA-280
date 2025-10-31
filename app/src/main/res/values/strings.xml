@@ -1,4 +1,6 @@
 <resources>
     <string name="app_name">Quick Mart</string>
     <string name="title_activity_details">DetailsActivity</string>
+    <string name="title_activity_bayment">BaymentActivity</string>
+    <string name="title_activity_sucess_bayment">SucessBaymentActivity</string>
 </resources>

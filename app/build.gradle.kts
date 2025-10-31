@@ -70,5 +70,6 @@ dependencies {
     implementation(libs.room.ktx)
     testImplementation(libs.room.testing)
     kapt(libs.room.compiler)
-    implementation("io.coil-kt:coil-compose:2.7.0")
+    implementation(libs.coil.compose)
+    implementation("androidx.compose.material3:material3:1.3.0")
 }
