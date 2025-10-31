@@ -1,9 +1,11 @@
 package com.example.quick_mart.Detailshome
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -36,6 +38,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -45,14 +48,24 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.quick_mart.R
 import coil.compose.AsyncImage
+import coil.request.ImageRequest
 import kotlin.text.ifEmpty
 
 class DetailsActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
+        val name = intent.getStringExtra("name") ?: ""
+        val price = intent.getDoubleExtra("price", 0.0)
+        val imageUrl = intent.getStringExtra("imageUrl") ?: ""
+        val description = intent.getStringExtra("description") ?: ""
         setContent {
-
+            ProductDetailsScreen(
+                name = name,
+                price = price,
+                imageUrl = imageUrl,
+                description = description
+            )
         }
     }
 }
@@ -81,10 +94,15 @@ fun ProductDetailsScreen(
                 .verticalScroll(rememberScrollState())
                 .padding(horizontal = 16.dp)
                 .padding(bottom = 160.dp)
-                .padding(top = 40.dp)
+                .padding(top = 80.dp)
         ) {
             AsyncImage(
-                model = imageUrl.ifEmpty { R.drawable.notfoundimage1 },
+                model = ImageRequest.Builder(LocalContext.current)
+                    .data(imageUrl)
+                    .crossfade(true)
+                    .error(R.drawable.notfoundimage)
+                    .placeholder(R.drawable.notfoundimage)
+                    .build(),
                 contentDescription = "Product Image",
                 modifier = Modifier
                     .fillMaxWidth()
@@ -127,7 +145,7 @@ fun ProductDetailsScreen(
                 color = Color.LightGray,
                 fontSize = 14.sp,
                 lineHeight = 20.sp,
-                maxLines = if(expanded) Int.MAX_VALUE else 4,
+                maxLines = if(expanded) Int.MAX_VALUE else 6,
                 overflow = TextOverflow.Ellipsis
             )
 
@@ -229,8 +247,12 @@ fun ProductDetailsScreen(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.SpaceBetween
             ) {
+                val context = LocalContext.current
                 Button(
-                    onClick = { /* Handle Buy */ },
+                    onClick = {
+                        val intent = Intent(context, BaymentActivity::class.java)
+                        context.startActivity(intent)
+                    },
                     colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF00FFAA)),
                     modifier = Modifier
                         .weight(1f)
@@ -243,7 +265,7 @@ fun ProductDetailsScreen(
                 Spacer(modifier = Modifier.width(10.dp))
 
                 Button(
-                    onClick = { /* Handle Add to Cart */ },
+                    onClick = {  },
                     colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF00CC88)),
                     modifier = Modifier
                         .weight(1f)
