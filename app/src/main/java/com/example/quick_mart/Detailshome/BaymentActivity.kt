@@ -2,6 +2,7 @@ package com.example.quick_mart.Detailshome
 
 import android.content.Intent
 import android.os.Bundle
+import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
@@ -66,8 +67,27 @@ fun PaymentScreen(onSaveClick: () -> Unit = {}) {
                 val context = LocalContext.current
                 Button(
                     onClick = {
-                        val intent = Intent(context, SucessBaymentActivity::class.java)
-                        context.startActivity(intent)
+                        when {
+                            cardNumber.value.isBlank() ||
+                                    cardHolder.value.isBlank() ||
+                                    expiryDate.value.isBlank() ||
+                                    cvv.value.isBlank() -> {
+                                Toast.makeText(context, "Please fill all fields", Toast.LENGTH_SHORT).show()
+                            }
+
+                            !cardNumber.value.matches(Regex("^\\d{16}\$")) -> {
+                                Toast.makeText(context, "Card number must be 16 digits", Toast.LENGTH_SHORT).show()
+                            }
+
+                            !cvv.value.matches(Regex("^\\d{3}\$")) -> {
+                                Toast.makeText(context, "CVV must be 3 digits", Toast.LENGTH_SHORT).show()
+                            }
+
+                            else -> {
+                                val intent = Intent(context, SucessBaymentActivity::class.java)
+                                context.startActivity(intent)
+                            }
+                        }
                     },
                     colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF00DFA2)),
                     shape = RoundedCornerShape(10.dp),
