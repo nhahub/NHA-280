@@ -131,7 +131,8 @@ fun ProductDetailsScreen(
                 overflow = TextOverflow.Ellipsis
             )
 
-            if (description.length > 400) {
+            if (description.length > 400
+                ) {
                 Text(
                     text = if (expanded) "Read less" else "Read more",
                     color = Color(0xFF00FFAA),
