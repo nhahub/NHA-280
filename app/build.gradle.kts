@@ -2,6 +2,7 @@ plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
+    alias(libs.plugins.kotlin.kapt)
 }
 
 android {
@@ -11,7 +12,7 @@ android {
     defaultConfig {
         applicationId = "com.example.quick_mart"
         minSdk = 27
-        targetSdk = 36
+        targetSdk = 35
         versionCode = 1
         versionName = "1.0"
 
@@ -62,4 +63,12 @@ dependencies {
     implementation(libs.converter.gson)
     //viewmodel
     implementation(libs.lifecycle.viewmodel.ktx)
+
+    //room
+    implementation(libs.room.runtime)
+    annotationProcessor(libs.room.compiler)
+    implementation(libs.room.ktx)
+    testImplementation(libs.room.testing)
+    kapt(libs.room.compiler)
+    implementation("io.coil-kt:coil-compose:2.7.0")
 }

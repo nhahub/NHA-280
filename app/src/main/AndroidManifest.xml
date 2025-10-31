@@ -14,6 +14,11 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.QuickMart">
         <activity
+            android:name=".Detailshome.DetailsActivity"
+            android:exported="false"
+            android:label="@string/title_activity_details"
+            android:theme="@style/Theme.QuickMart" />
+        <activity
             android:name=".Detailshome.detailsActivity"
             android:exported="false" />
         <activity
