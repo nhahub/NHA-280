@@ -1,16 +1,16 @@
 package com.example.quick_mart
-
+import androidx.compose.material3.Surface
+import androidx.compose.foundation.layout.fillMaxSize
 import android.os.Bundle
-import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.compose.material3.Text
+import androidx.activity.ComponentActivity
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Button
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -20,7 +20,9 @@ import com.example.quick_mart.features.home.repo.HomeRepositoryImp
 import com.example.quick_mart.features.home.viewmodel.HomeViewModel
 import com.example.quick_mart.features.home.viewmodel.HomeViewModelFactory
 import com.example.quick_mart.network.RemoteDataSourceImp
-import com.example.quick_mart.ui.theme.QuickMartTheme
+import com.example.quick_mart.ui.theme.QuickMartTheme1
+
+
 
 class MainActivity : ComponentActivity() {
     private val viewModel: HomeViewModel by viewModels{
@@ -33,7 +35,7 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
-            QuickMartTheme {
+            QuickMartTheme1 {
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
                     Box(
                         modifier = Modifier
@@ -59,7 +61,7 @@ fun ApiButton(onClick: () -> Unit) {
 @Preview(showBackground = true)
 @Composable
 fun ApiButtonPreview() {
-    QuickMartTheme {
+    QuickMartTheme1 {
         ApiButton(onClick = {})
     }
 }

@@ -13,4 +13,7 @@ class RemoteDataSourceImp: RemoteDataSource {
     override suspend fun getCategoriesResponseFromNetwork(): Response<List<Category>> {
         return apiService.getCategoriesResponse()
     }
+    override suspend fun getProductsByCategory(categoryId: Int): Response<List<Product>> {
+        return apiService.getProductsByCategoryResponse(categoryId)
+    }
 }

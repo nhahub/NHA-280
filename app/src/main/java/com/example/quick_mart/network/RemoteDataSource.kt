@@ -8,4 +8,6 @@ import retrofit2.Response
 interface RemoteDataSource {
     suspend fun getProductsResponseFromNetwork(): Response<List<Product>>
     suspend fun getCategoriesResponseFromNetwork(): Response<List<Category>>
+    suspend fun getProductsByCategory(categoryId: Int): Response<List<Product>>
+
 }

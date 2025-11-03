@@ -63,6 +63,15 @@ dependencies {
     implementation(libs.converter.gson)
     //viewmodel
     implementation(libs.lifecycle.viewmodel.ktx)
+    // Coroutine
+    implementation(libs.kotlinx.coroutines.android)
+// Coil
+    implementation(libs.coil.compose)
+    implementation(libs.navigation.compose)
+    implementation(libs.lifecycle.viewmodel.compose)
+
+    implementation(libs.androidx.compose.runtime.livedata)
+
 
     //room
     implementation(libs.room.runtime)

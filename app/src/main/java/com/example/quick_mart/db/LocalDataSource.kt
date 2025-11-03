@@ -11,4 +11,7 @@ interface LocalDataSource {
     suspend fun getAllCategories(): List<Category>
     suspend fun clearAllCategories()
 
+
+
+
 }
