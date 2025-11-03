@@ -9,6 +9,7 @@ data class Product(
     val description: String?,
     @PrimaryKey val id: Int,
     val images: List<String?>?,
+    val name: String?,
     val price: Int?,
     val slug: String?,
     val title: String?,

@@ -94,9 +94,9 @@ fun SearchScreen(
             ) {
                 if (uiState.suggestions.isNotEmpty() && uiState.searchQuery.isNotBlank()) {
                     item {                        SearchSuggestions(
-                            suggestions = uiState.suggestions,
-                            onSuggestionClick = { viewModel.onSearchQueryChange(it) }
-                        )
+                        suggestions = uiState.suggestions,
+                        onSuggestionClick = { viewModel.onSearchQueryChange(it) }
+                    )
                     }
                 }
 
