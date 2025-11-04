@@ -25,4 +25,12 @@ interface ProductDao {
 
     @Query("DELETE FROM products")
     suspend fun deleteAllLocalProducts()
+
+    @Query("SELECT * FROM products")
+    suspend fun getAllProducts(): List<Product>
+
+
+    @Query("DELETE FROM products")
+    suspend fun clearAllProducts()
+
 }

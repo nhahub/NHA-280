@@ -29,5 +29,9 @@ class Converters {
     @TypeConverter
     fun categoryToString(category: Category?): String? {
         return gson.toJson(category)
+        @TypeConverter
+        fun listToString(list: List<String?>?): String? {
+            return gson.toJson(list)
+        }
     }
 }

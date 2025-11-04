@@ -10,7 +10,8 @@ object API {
 
 
     private val retro = Retrofit.Builder()
-        .baseUrl(BASE_URL)
+        .baseUrl("https://api.escuelajs.co/api/v1/")
+
         .addConverterFactory(GsonConverterFactory.create(gson))
         .build()
 

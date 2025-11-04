@@ -3,7 +3,6 @@ plugins {
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
     alias(libs.plugins.kotlin.kapt)
-
 }
 
 android {
@@ -13,7 +12,7 @@ android {
     defaultConfig {
         applicationId = "com.example.quick_mart"
         minSdk = 27
-        targetSdk = 36
+        targetSdk = 35
         versionCode = 1
         versionName = "1.0"
 
@@ -51,8 +50,6 @@ dependencies {
     implementation(libs.androidx.compose.ui.graphics)
     implementation(libs.androidx.compose.ui.tooling.preview)
     implementation(libs.androidx.compose.material3)
-    implementation(libs.androidx.lifecycle.viewmodel.compose)
-    implementation(libs.androidx.compose.material.icons.extended)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
@@ -66,9 +63,22 @@ dependencies {
     implementation(libs.converter.gson)
     //viewmodel
     implementation(libs.lifecycle.viewmodel.ktx)
+    // Coroutine
+    implementation(libs.kotlinx.coroutines.android)
+// Coil
+    implementation(libs.coil.compose)
+    implementation(libs.navigation.compose)
+    implementation(libs.lifecycle.viewmodel.compose)
+
+    implementation(libs.androidx.compose.runtime.livedata)
+
+
     //room
     implementation(libs.room.runtime)
+    annotationProcessor(libs.room.compiler)
     implementation(libs.room.ktx)
+    testImplementation(libs.room.testing)
     kapt(libs.room.compiler)
-
+    implementation(libs.coil.compose)
+    implementation("androidx.compose.material3:material3:1.3.0")
 }

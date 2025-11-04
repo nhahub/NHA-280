@@ -14,8 +14,25 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.QuickMart">
         <activity
-            android:name=".Detailshome.detailsActivity"
-            android:exported="false" />
+            android:name=".Detailshome.SucessBaymentActivity"
+            android:exported="false"
+            android:label="@string/title_activity_sucess_bayment"
+            android:theme="@style/Theme.QuickMart" />
+        <activity
+            android:name=".Detailshome.ui.theme.SucessBaymentActivity"
+            android:exported="false"
+            android:label="@string/title_activity_sucess_bayment"
+            android:theme="@style/Theme.QuickMart" />
+        <activity
+            android:name=".Detailshome.BaymentActivity"
+            android:exported="false"
+            android:label="@string/title_activity_bayment"
+            android:theme="@style/Theme.QuickMart" />
+        <activity
+            android:name=".Detailshome.DetailsActivity"
+            android:exported="false"
+            android:label="@string/title_activity_details"
+            android:theme="@style/Theme.QuickMart" />
         <activity
             android:name=".MainActivity"
             android:exported="true"
