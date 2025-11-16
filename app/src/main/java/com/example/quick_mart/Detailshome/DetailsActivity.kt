@@ -5,7 +5,6 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
-import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -49,7 +48,6 @@ import androidx.compose.ui.unit.sp
 import com.example.quick_mart.R
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
-import kotlin.text.ifEmpty
 
 class DetailsActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -250,8 +248,8 @@ fun ProductDetailsScreen(
                 val context = LocalContext.current
                 Button(
                     onClick = {
-                        val intent = Intent(context, BaymentActivity::class.java)
-                        context.startActivity(intent)
+//                        val intent = Intent(context, BaymentActivity::class.java)
+//                        context.startActivity(intent)
                     },
                     colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF00FFAA)),
                     modifier = Modifier
