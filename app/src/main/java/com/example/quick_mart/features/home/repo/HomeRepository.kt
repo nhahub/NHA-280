@@ -14,4 +14,9 @@ interface HomeRepository {
     suspend fun getAllLocalCategories(): List<Category>
     suspend fun clearAllLocalCategories()
 
+    //favorite
+    suspend fun updateFavoriteStatus(productId: Int, isFav: Boolean)
+    suspend fun getFavoriteProducts(): List<Product>
+
+
 }

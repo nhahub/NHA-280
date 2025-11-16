@@ -23,6 +23,12 @@ import com.example.quick_mart.features.categories.viewmodel.CategoriesViewModel
 import com.example.quick_mart.features.categories.viewmodel.CategoriesViewModelFactory
 import com.example.quick_mart.network.RemoteDataSourceImp
 
+//favorites
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material.icons.filled.Favorite
+import androidx.compose.material.icons.outlined.FavoriteBorder
+
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun CategoriesScreen() {
@@ -37,6 +43,7 @@ fun CategoriesScreen() {
         factory = CategoriesViewModelFactory(repository)
     )
 
+    val favorites by viewModel.favoriteProducts.observeAsState(emptyList())
     val categoriesState by viewModel.categories.observeAsState(emptyList())
     val productsState by viewModel.products.observeAsState(emptyList())
     val selectedCategoryId by viewModel.selectedCategoryId.observeAsState()
@@ -130,10 +137,14 @@ fun CategoriesScreen() {
                             .fillMaxSize()
                             .padding(innerPadding)
                             .padding(8.dp)
-                    ) {
+                    ) {//favorites
                         items(productsState) { product ->
-                            ProductItem(product)
+                            ProductItem(
+                                product = product,
+                                onFavoriteClick = { viewModel.toggleFavorite(it) }
+                            )
                         }
+
                     }
                 }
             }
@@ -171,34 +182,61 @@ fun CategoryItem(name: String, imageUrl: String, onClick: () -> Unit) {
         }
     }
 }
-
+//favorites
 @Composable
-fun ProductItem(product: Product) {
+fun ProductItem(
+    product: Product,
+    onFavoriteClick: (Product) -> Unit
+) {
     Card(
         modifier = Modifier
             .fillMaxWidth()
             .padding(vertical = 8.dp),
-        elevation = CardDefaults.cardElevation(defaultElevation = 4.dp),
-        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface)
+        elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)
     ) {
-        Column(modifier = Modifier.padding(16.dp)) {
-            Text(
-                text = product.title ?: "No title",
-                style = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.Bold),
-                color = MaterialTheme.colorScheme.onSurface
-            )
-            Spacer(modifier = Modifier.height(4.dp))
-            Text(
-                text = product.description ?: "No description",
-                style = MaterialTheme.typography.bodyMedium,
-                color = MaterialTheme.colorScheme.onSurface
-            )
-            Spacer(modifier = Modifier.height(6.dp))
-            Text(
-                text = "Price: ${product.price ?: 0}",
-                style = MaterialTheme.typography.bodyLarge.copy(fontWeight = FontWeight.SemiBold),
-                color = MaterialTheme.colorScheme.primary
-            )
+
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(16.dp),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+
+            Column(
+                modifier = Modifier
+                    .weight(1f)
+            ) {
+                Text(
+                    text = product.title ?: "No title",
+                    style = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.Bold)
+                )
+
+                Spacer(modifier = Modifier.height(4.dp))
+
+                Text(
+                    text = product.description ?: "No description",
+                    style = MaterialTheme.typography.bodyMedium
+                )
+
+                Spacer(modifier = Modifier.height(6.dp))
+
+                Text(
+                    text = "Price: ${product.price ?: 0}",
+                    style = MaterialTheme.typography.bodyLarge.copy(fontWeight = FontWeight.SemiBold),
+                    color = MaterialTheme.colorScheme.primary
+                )
+            }
+
+            // ❤️ Favorite Icon
+            IconButton(onClick = { onFavoriteClick(product) }) {
+                Icon(
+                    imageVector = if (product.isFavorite)
+                        Icons.Filled.Favorite
+                    else
+                        Icons.Outlined.FavoriteBorder,
+                    contentDescription = "Toggle favorite"
+                )
+            }
         }
     }
 }

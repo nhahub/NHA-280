@@ -1,4 +1,5 @@
 package com.example.quick_mart.dto
+import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 
@@ -12,5 +13,9 @@ data class Product(
     val price: Int?,
     val slug: String?,
     val title: String?,
-    val updatedAt: String?
+    val updatedAt: String?,
+    //favorites
+
+    @ColumnInfo(name = "isFavorite")
+    var isFavorite: Boolean = false
 )

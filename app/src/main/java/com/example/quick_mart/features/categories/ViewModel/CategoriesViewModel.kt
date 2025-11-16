@@ -8,9 +8,11 @@ import com.example.quick_mart.dto.Category
 import com.example.quick_mart.dto.Product
 import com.example.quick_mart.features.categories.repo.CategoriesRepository
 import kotlinx.coroutines.launch
-
+import com.example.quick_mart.features.home.repo.HomeRepository
 class CategoriesViewModel(
-    private val repository: CategoriesRepository
+    private val repository: CategoriesRepository,
+
+    private val homeRepository: HomeRepository
 ) : ViewModel() {
 
     // CATEGORIES DATA
@@ -88,5 +90,30 @@ class CategoriesViewModel(
     // to clear the selected category ID and products list and reset the UI state
     fun clearSelectedCategory() {
         _selectedCategoryId.value = null
+    }
+
+    private val _favoriteProducts = MutableLiveData<List<Product>>()
+    val favoriteProducts: LiveData<List<Product>> = _favoriteProducts
+    // تغيير حالة favorite
+    fun toggleFavorite(product: Product) {
+        viewModelScope.launch {
+            val newStatus = !product.isFavorite
+            product.isFavorite = newStatus
+
+            homeRepository.updateFavoriteStatus(product.id, newStatus)
+
+            // تحديث LiveData عشان Compose يتحدث فورًا
+            _products.value = _products.value?.map {
+                if(it.id == product.id) it.copy(isFavorite = newStatus) else it
+            }
+        }
+    }
+
+    // جلب كل المنتجات المفضلة
+    fun refreshFavorites() {
+        viewModelScope.launch {
+            val list = homeRepository.getFavoriteProducts()
+            _favoriteProducts.postValue(list)
+        }
     }
 }

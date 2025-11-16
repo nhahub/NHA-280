@@ -1,6 +1,7 @@
 package com.example.quick_mart.features.home.repo
 
 import com.example.quick_mart.db.LocalDataSource
+import com.example.quick_mart.db.dao.ProductDao
 import com.example.quick_mart.dto.Category
 import com.example.quick_mart.dto.Product
 import com.example.quick_mart.network.RemoteDataSource
@@ -8,7 +9,8 @@ import retrofit2.Response
 
 class HomeRepositoryImp(
     private val remoteDataSource: RemoteDataSource,
-    private val localDataSource: LocalDataSource
+    private val localDataSource: LocalDataSource,
+    private val productDao: ProductDao.ProductDao
 
 ) : HomeRepository {
 
@@ -43,4 +45,15 @@ class HomeRepositoryImp(
     override suspend fun clearAllLocalCategories() {
         localDataSource.clearAllCategories()
     }
+
+    //favorites
+    override suspend fun updateFavoriteStatus(productId: Int, isFavorite: Boolean) {
+        productDao.updateFavoriteStatus(productId, isFavorite)
+    }
+
+    override suspend fun getFavoriteProducts(): List<Product> {
+        return productDao.getFavoriteProducts()
+    }
+
+
 }

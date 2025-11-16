@@ -39,6 +39,15 @@ class LocalDataSourceImp(
         categoryDao.deleteAllLocalCategories()
     }
 
+    //favorites
+    override suspend fun updateFavoriteStatus(productId: Int, isFav: Boolean) {
+        productDao.updateFavoriteStatus(productId, isFav)
+    }
+
+    override suspend fun getFavoriteProducts(): List<Product> {
+        return productDao.getFavoriteProducts()
+    }
+
 
 
 }
