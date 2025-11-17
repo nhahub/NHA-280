@@ -4,7 +4,7 @@ import android.content.Context
 import com.example.quick_mart.db.dao.CategoryDao
 import com.example.quick_mart.db.dao.ProductDao
 import com.example.quick_mart.dto.Product
-
+import com.example.quick_mart.dto.Category
 class LocalDataSourceImp(
     context: Context
 ): LocalDataSource {
@@ -47,7 +47,11 @@ class LocalDataSourceImp(
     override suspend fun getFavoriteProducts(): List<Product> {
         return productDao.getFavoriteProducts()
     }
-
-
+    override suspend fun insertProducts(products: List<Product>) {
+        productDao.insertProducts(products)
+    }
+    override suspend fun insertCategories(categories: List<Category>) {
+        categoryDao.insertCategories(categories)
+    }
 
 }

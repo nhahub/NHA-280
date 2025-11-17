@@ -10,7 +10,8 @@ interface LocalDataSource {
     suspend fun insertCategory(category: Category)
     suspend fun getAllCategories(): List<Category>
     suspend fun clearAllCategories()
-
+    suspend fun insertProducts(products: List<Product>)
+    suspend fun insertCategories(categories: List<Category>)
     //favorites
     suspend fun updateFavoriteStatus(productId: Int, isFav: Boolean)
     suspend fun getFavoriteProducts(): List<Product>

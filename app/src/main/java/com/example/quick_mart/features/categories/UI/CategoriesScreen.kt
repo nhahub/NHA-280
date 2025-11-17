@@ -24,7 +24,12 @@ import com.example.quick_mart.features.categories.viewmodel.CategoriesViewModel
 import com.example.quick_mart.features.categories.viewmodel.CategoriesViewModelFactory
 import com.example.quick_mart.network.RemoteDataSourceImp
 import com.example.quick_mart.features.home.repo.HomeRepositoryImp
-
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.compose.material3.MaterialTheme
 
 
 //favorites
@@ -32,6 +37,7 @@ import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.outlined.FavoriteBorder
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import com.example.quick_mart.dto.Category
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -140,10 +146,7 @@ fun CategoriesScreen() {
                             .padding(8.dp)
                     ) {
                         items(productsState) { product ->
-                            ProductItem(
-                                product = product,
-                                onFavoriteClick = { viewModel.toggleFavorite(it) }
-                            )
+                            ProductItem(product)
                         }
                     }
                 }
@@ -247,13 +250,16 @@ fun ProductItem(
             .padding(vertical = 8.dp),
         elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)
     ) {
+        Column(modifier = Modifier.padding(16.dp)) {
 
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(16.dp),
-            verticalAlignment = Alignment.CenterVertically
-        ) {
+            // الصورة فوق النص
+            AsyncImage(
+                model = product.category?.image ?: "",
+                contentDescription = product.title ?: "Product Image",
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(150.dp)
+            )
 
             Column(
                 modifier = Modifier

@@ -53,5 +53,7 @@ interface ProductDao {
         @Query("UPDATE products SET isFavorite = :favorite WHERE id = :productId")
         suspend fun updateFavoriteStatus(productId: Int, favorite: Boolean)
     }
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun insertProducts(products: List<Product>)
 
 }

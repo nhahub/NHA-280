@@ -5,7 +5,9 @@ import com.example.quick_mart.dto.Category
 import com.example.quick_mart.dto.Product
 import com.example.quick_mart.network.RemoteDataSource
 import retrofit2.Response
-
+import kotlinx.coroutines.withContext
+import kotlinx.coroutines.Dispatchers
+import android.util.Log
 class CategoriesRepositoryImp(
     private val remoteDataSource: RemoteDataSource,
     private val localDataSource: LocalDataSource
@@ -42,10 +44,20 @@ class CategoriesRepositoryImp(
     }
 
     override suspend fun getProductsByCategoryName(categoryName: String): List<Product> {
-        val allProducts = localDataSource.getAllProducts()
-        return allProducts.filter { product ->
-            val catName = product.category?.name
-            catName != null && catName.equals(categoryName, ignoreCase = true)
+        return withContext(Dispatchers.IO) {
+            try {
+                val response = remoteDataSource.getProductsResponseFromNetwork()
+                val allProducts = if (response.isSuccessful && response.body() != null) {
+                    response.body()!!
+                } else {
+                    emptyList()
+                }
+
+                val filtered = allProducts.filter { it.category?.name.equals(categoryName, ignoreCase = true) }
+                filtered
+            } catch (e: Exception) {
+                emptyList()
+            }
         }
     }
 
