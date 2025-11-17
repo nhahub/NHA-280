@@ -13,7 +13,9 @@ interface CategoriesRepository {
     suspend fun clearAllLocalCategories()
 
     // Products
-    suspend fun getProductsByCategory(categoryId: Int): List<Product>
     suspend fun insertLocalProduct(product: Product)
-    suspend fun clearProductsByCategory(categoryId: Int)
+    suspend fun getProductsByCategoryName(categoryName: String): List<Product>
+    suspend fun getProductsFromNetwork(): Response<List<Product>>
+
+    suspend fun clearAllProducts()
 }

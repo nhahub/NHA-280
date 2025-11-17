@@ -1,5 +1,6 @@
 package com.example.quick_mart.features.categories.ui
 
+import android.content.Context
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -22,12 +23,15 @@ import com.example.quick_mart.features.categories.repo.CategoriesRepositoryImp
 import com.example.quick_mart.features.categories.viewmodel.CategoriesViewModel
 import com.example.quick_mart.features.categories.viewmodel.CategoriesViewModelFactory
 import com.example.quick_mart.network.RemoteDataSourceImp
+import com.example.quick_mart.features.home.repo.HomeRepositoryImp
+
+
 
 //favorites
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.outlined.FavoriteBorder
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -43,10 +47,10 @@ fun CategoriesScreen() {
         factory = CategoriesViewModelFactory(repository)
     )
 
-    val favorites by viewModel.favoriteProducts.observeAsState(emptyList())
+   // val favorites by viewModel.favoriteProducts.observeAsState(emptyList())
     val categoriesState by viewModel.categories.observeAsState(emptyList())
     val productsState by viewModel.products.observeAsState(emptyList())
-    val selectedCategoryId by viewModel.selectedCategoryId.observeAsState()
+    val selectedCategoryName by viewModel.selectedCategoryName.observeAsState()
     val isLoading by viewModel.isLoading.observeAsState(false)
 
     Scaffold(
@@ -54,22 +58,15 @@ fun CategoriesScreen() {
             TopAppBar(
                 title = {
                     Text(
-                        text = if (selectedCategoryId != null) {
-                            val cat = categoriesState.find { it.id == selectedCategoryId }
-                            cat?.name ?: "Products"
-                        } else {
-                            "Categories"
-                        },
+                        text = selectedCategoryName ?: "Categories",
                         style = MaterialTheme.typography.titleLarge.copy(fontWeight = FontWeight.Bold)
                     )
                 },
                 navigationIcon = {
                     IconButton(
                         onClick = {
-                            if (selectedCategoryId != null) {
+                            if (selectedCategoryName != null) {
                                 viewModel.clearSelectedCategory()
-                            } else {
-                                // navController.navigate("home")
                             }
                         }
                     ) {
@@ -91,7 +88,7 @@ fun CategoriesScreen() {
 
         when {
             isLoading -> {
-                // loadind screen
+                // loading screen
                 Box(
                     modifier = Modifier
                         .fillMaxSize()
@@ -102,7 +99,7 @@ fun CategoriesScreen() {
                 }
             }
 
-            selectedCategoryId == null -> {
+            selectedCategoryName == null -> {
                 // Categories screen
                 LazyColumn(
                     modifier = Modifier
@@ -114,7 +111,11 @@ fun CategoriesScreen() {
                         CategoryItem(
                             name = category.name ?: "Unnamed",
                             imageUrl = category.image ?: "",
-                            onClick = { category.id?.let { viewModel.selectCategory(it) } }
+                            onClick = {
+                                category.name?.let { name ->
+                                    viewModel.selectCategory(name)
+                                }
+                            }
                         )
                     }
                 }
@@ -137,14 +138,13 @@ fun CategoriesScreen() {
                             .fillMaxSize()
                             .padding(innerPadding)
                             .padding(8.dp)
-                    ) {//favorites
+                    ) {
                         items(productsState) { product ->
                             ProductItem(
                                 product = product,
                                 onFavoriteClick = { viewModel.toggleFavorite(it) }
                             )
                         }
-
                     }
                 }
             }
@@ -182,6 +182,59 @@ fun CategoryItem(name: String, imageUrl: String, onClick: () -> Unit) {
         }
     }
 }
+
+@Composable
+fun ProductItem(
+    product: Product,
+    onFavoriteClick: (Product) -> Unit
+) {
+    Card(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(vertical = 8.dp),
+        elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)
+    ) {
+
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(16.dp),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+
+            Column(
+                modifier = Modifier.weight(1f)
+            ) {
+                Text(
+                    text = product.title ?: "No title",
+                    style = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.Bold)
+                )
+                Spacer(modifier = Modifier.height(4.dp))
+                Text(
+                    text = product.description ?: "No description",
+                    style = MaterialTheme.typography.bodyMedium
+                )
+                Spacer(modifier = Modifier.height(6.dp))
+                Text(
+                    text = "Price: ${product.price ?: 0}",
+                    style = MaterialTheme.typography.bodyLarge.copy(fontWeight = FontWeight.SemiBold),
+                    color = MaterialTheme.colorScheme.primary
+                )
+            }
+
+            IconButton(onClick = { onFavoriteClick(product) }) {
+                Icon(
+                    imageVector = if (product.isFavorite)
+                        Icons.Filled.Favorite
+                    else
+                        Icons.Outlined.FavoriteBorder,
+                    contentDescription = "Toggle favorite"
+                )
+            }
+        }
+    }
+}
+
 //favorites
 @Composable
 fun ProductItem(

@@ -10,9 +10,7 @@ import com.example.quick_mart.features.categories.repo.CategoriesRepository
 import kotlinx.coroutines.launch
 import com.example.quick_mart.features.home.repo.HomeRepository
 class CategoriesViewModel(
-    private val repository: CategoriesRepository,
-
-    private val homeRepository: HomeRepository
+    private val repository: CategoriesRepository
 ) : ViewModel() {
 
     // CATEGORIES DATA
@@ -29,8 +27,9 @@ class CategoriesViewModel(
     //  CATEGORY SELECTION STATE
 
     // save the selected category ID
-    private val _selectedCategoryId = MutableLiveData<Int?>(null)
-    val selectedCategoryId: LiveData<Int?> = _selectedCategoryId
+    // CATEGORY SELECTION STATE
+    private val _selectedCategoryName = MutableLiveData<String?>(null)
+    val selectedCategoryName: LiveData<String?> = _selectedCategoryName
 
 
     //  LOADING STATE
@@ -68,14 +67,13 @@ class CategoriesViewModel(
     }
 
 
-    //  FETCH PRODUCTS BY CATEGORY
-    fun selectCategory(categoryId: Int) {
-        _selectedCategoryId.value = categoryId
+    // FETCH PRODUCTS BY CATEGORY (using category name)
+    fun selectCategory(categoryName: String) {
+        _selectedCategoryName.value = categoryName // حفظ الاسم
         viewModelScope.launch {
             _isLoading.value = true
             try {
-
-                val productsList = repository.getProductsByCategory(categoryId)
+                val productsList = repository.getProductsByCategoryName(categoryName)
                 _products.value = productsList
             } catch (e: Exception) {
                 _products.value = emptyList()
@@ -85,12 +83,13 @@ class CategoriesViewModel(
         }
     }
 
-
     // CLEAR CATEGORY SELECTION
-    // to clear the selected category ID and products list and reset the UI state
     fun clearSelectedCategory() {
-        _selectedCategoryId.value = null
+        _selectedCategoryName.value = null
+        _products.value = emptyList()
     }
+}
+
 
     private val _favoriteProducts = MutableLiveData<List<Product>>()
     val favoriteProducts: LiveData<List<Product>> = _favoriteProducts

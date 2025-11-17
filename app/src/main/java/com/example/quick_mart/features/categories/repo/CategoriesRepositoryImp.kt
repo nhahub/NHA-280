@@ -32,37 +32,24 @@ class CategoriesRepositoryImp(
     //  PRODUCTS
 
     // Get products for a specific category (Network + Local fallback)
-    override suspend fun getProductsByCategory(categoryId: Int): List<Product> {
-        return try {
-            val response = remoteDataSource.getProductsByCategory(categoryId)
-            if (response.isSuccessful) {
-                val apiProducts = response.body() ?: emptyList()
 
-                clearProductsByCategory(categoryId)
-
-                apiProducts.forEach { localDataSource.insertProduct(it) }
-
-                apiProducts
-            } else {
-                // if the API call fails, try to get products from the local database
-                localDataSource.getAllProducts()
-                    .filter { it.category?.id == categoryId }
-            }
-        } catch (e: Exception) {
-            // if there's an exception, try to get products from the local database
-            localDataSource.getAllProducts()
-                .filter { it.category?.id == categoryId }
-        }
+    override suspend fun getProductsFromNetwork(): Response<List<Product>> {
+        return remoteDataSource.getProductsResponseFromNetwork()
     }
 
     override suspend fun insertLocalProduct(product: Product) {
         localDataSource.insertProduct(product)
     }
 
-    // if the API call fails, try to get products from the local database
-    override suspend fun clearProductsByCategory(categoryId: Int) {
+    override suspend fun getProductsByCategoryName(categoryName: String): List<Product> {
         val allProducts = localDataSource.getAllProducts()
-        val filteredProducts = allProducts.filter { it.category?.id == categoryId }
-        filteredProducts.forEach { localDataSource.clearAllProducts() }
+        return allProducts.filter { product ->
+            val catName = product.category?.name
+            catName != null && catName.equals(categoryName, ignoreCase = true)
+        }
     }
-}
+
+    override suspend fun clearAllProducts() {
+        localDataSource.clearAllProducts()
+        }
+    }
