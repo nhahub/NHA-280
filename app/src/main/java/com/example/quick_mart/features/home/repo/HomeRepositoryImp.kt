@@ -10,7 +10,7 @@ import retrofit2.Response
 class HomeRepositoryImp(
     private val remoteDataSource: RemoteDataSource,
     private val localDataSource: LocalDataSource,
-    private val productDao: ProductDao.ProductDao
+//    private val productDao: ProductDao.ProductDao
 
 ) : HomeRepository {
 
@@ -48,11 +48,12 @@ class HomeRepositoryImp(
 
     //favorites
     override suspend fun updateFavoriteStatus(productId: Int, isFavorite: Boolean) {
-        productDao.updateFavoriteStatus(productId, isFavorite)
+//        productDao.updateFavoriteStatus(productId, isFavorite)
     }
 
     override suspend fun getFavoriteProducts(): List<Product> {
-        return productDao.getFavoriteProducts()
+        return emptyList()
+//        return productDao.getFavoriteProducts()
     }
 
 
