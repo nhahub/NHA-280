@@ -64,4 +64,8 @@ class CategoriesRepositoryImp(
     override suspend fun clearAllProducts() {
         localDataSource.clearAllProducts()
         }
+
+    override fun updateFavoriteStatus(id: Int, newState: Boolean) {
+        TODO("Not yet implemented")
     }
+}
