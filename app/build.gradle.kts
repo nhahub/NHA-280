@@ -3,6 +3,7 @@ plugins {
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
     alias(libs.plugins.kotlin.kapt)
+    alias(libs.plugins.kotlin.serialization)
 
 }
 
@@ -74,6 +75,9 @@ dependencies {
     implementation(libs.coil.compose)
     kapt(libs.room.compiler)
     implementation(libs.androidx.runtime.livedata)
+    implementation(libs.navigation.compose)
+
+
 
     //nav
     dependencies {
