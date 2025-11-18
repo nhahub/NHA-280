@@ -38,6 +38,7 @@ import androidx.compose.material.icons.outlined.FavoriteBorder
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import com.example.quick_mart.dto.Category
+import com.example.quick_mart.features.categories.ui.components.ProductItem
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
