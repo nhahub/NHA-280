@@ -1,6 +1,4 @@
 package com.example.quick_mart.features.categories.ui
-
-import android.content.Context
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -8,7 +6,6 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material3.*
-import androidx.compose.runtime.*
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -23,13 +20,15 @@ import com.example.quick_mart.features.categories.repo.CategoriesRepositoryImp
 import com.example.quick_mart.features.categories.viewmodel.CategoriesViewModel
 import com.example.quick_mart.features.categories.viewmodel.CategoriesViewModelFactory
 import com.example.quick_mart.network.RemoteDataSourceImp
-import com.example.quick_mart.features.home.repo.HomeRepositoryImp
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
-import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
+import com.example.quick_mart.features.home.repo.HomeRepositoryImp
+import com.example.quick_mart.features.home.viewmodel.HomeViewModel
+import com.example.quick_mart.features.home.viewmodel.HomeViewModelFactory
+import com.example.quick_mart.features.categories.repo.CategoriesRepository
+
 
 
 //favorites
@@ -38,8 +37,6 @@ import androidx.compose.material.icons.outlined.FavoriteBorder
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import com.example.quick_mart.dto.Category
-import com.example.quick_mart.features.categories.ui.components.ProductItem
-
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun CategoriesScreen() {
@@ -50,8 +47,12 @@ fun CategoriesScreen() {
         RemoteDataSourceImp(),
         LocalDataSourceImp(context)
     )
+    val homeRepository= HomeRepositoryImp(
+        RemoteDataSourceImp(),
+        LocalDataSourceImp(context)
+    )
     val viewModel: CategoriesViewModel = viewModel(
-        factory = CategoriesViewModelFactory(repository)
+        factory = CategoriesViewModelFactory(repository=repository,homeRepository = homeRepository)
     )
 
    // val favorites by viewModel.favoriteProducts.observeAsState(emptyList())
@@ -147,11 +148,9 @@ fun CategoriesScreen() {
                             .padding(8.dp)
                     ) {
                         items(productsState) { product ->
-                            ProductItem(
-                                product = product,
-                                onFavoriteClick = { viewModel.toggleFavorite(product) }
-                            )
-                        }
+                           ProductItem(product=product, onFavoriteClick = {viewModel.toggleFavorite(product)})
+
+                      }
                     }
                 }
             }
@@ -205,7 +204,7 @@ fun ProductItem(
     ) {
         Column(modifier = Modifier.padding(16.dp)) {
 
-            // الصورة فوق النص
+
             AsyncImage(
                 model = product.category?.image ?: "",
                 contentDescription = product.title ?: "Product Image",
@@ -214,10 +213,7 @@ fun ProductItem(
                     .height(150.dp)
             )
 
-            Column(
-                modifier = Modifier
-                    .weight(1f)
-            ) {
+            Column {
                 Text(
                     text = product.title ?: "No title",
                     style = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.Bold)
@@ -238,7 +234,6 @@ fun ProductItem(
                     color = MaterialTheme.colorScheme.primary
                 )
             }
-
 
 
             //  Favorite Icon

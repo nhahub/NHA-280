@@ -91,6 +91,7 @@ class CategoriesViewModel(
         _products.value = emptyList()
     }
 
+
     //favorites
     fun toggleFavorite(product: Product) {
         viewModelScope.launch {
@@ -106,6 +107,7 @@ class CategoriesViewModel(
         }
     }
 }
+
 
 
 
