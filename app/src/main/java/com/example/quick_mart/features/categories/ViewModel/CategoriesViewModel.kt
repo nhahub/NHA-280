@@ -90,31 +90,23 @@ class CategoriesViewModel(
         _selectedCategoryName.value = null
         _products.value = emptyList()
     }
-}
 
-
-    private val _favoriteProducts = MutableLiveData<List<Product>>()
-    val favoriteProducts: LiveData<List<Product>> = _favoriteProducts
-    // تغيير حالة favorite
+    //favorites
     fun toggleFavorite(product: Product) {
         viewModelScope.launch {
-            val newStatus = !product.isFavorite
-            product.isFavorite = newStatus
+            val newState = !product.isFavorite
+            repository.updateFavoriteStatus(product.id, newState)
 
-            homeRepository.updateFavoriteStatus(product.id, newStatus)
+            // Update UI list
+            val updated = products.value?.map {
+                if (it.id == product.id) it.copy(isFavorite = newState) else it
+            } ?: emptyList()
 
-            // تحديث LiveData عشان Compose يتحدث فورًا
-            _products.value = _products.value?.map {
-                if(it.id == product.id) it.copy(isFavorite = newStatus) else it
-            }
-        }
-    }
-
-    // جلب كل المنتجات المفضلة
-    fun refreshFavorites() {
-        viewModelScope.launch {
-            val list = homeRepository.getFavoriteProducts()
-            _favoriteProducts.postValue(list)
+            _products.value = updated
         }
     }
 }
+
+
+
+

@@ -18,4 +18,5 @@ interface CategoriesRepository {
     suspend fun getProductsFromNetwork(): Response<List<Product>>
 
     suspend fun clearAllProducts()
+    fun updateFavoriteStatus(id: Int, newState: Boolean)
 }

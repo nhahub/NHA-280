@@ -48,13 +48,11 @@ class HomeRepositoryImp(
 
     //favorites
     override suspend fun updateFavoriteStatus(productId: Int, isFavorite: Boolean) {
-//        productDao.updateFavoriteStatus(productId, isFavorite)
+        localDataSource.updateFavoriteStatus(productId, isFavorite)
     }
 
     override suspend fun getFavoriteProducts(): List<Product> {
-        return emptyList()
-//        return productDao.getFavoriteProducts()
+        return localDataSource.getFavoriteProducts()
     }
-
 
 }

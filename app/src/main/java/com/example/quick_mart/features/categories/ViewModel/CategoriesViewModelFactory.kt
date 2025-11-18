@@ -14,4 +14,8 @@ class CategoriesViewModelFactory(
         }
         throw IllegalArgumentException("Unknown ViewModel class")
     }
+
+    private fun CategoriesViewModel(repository: CategoriesRepository) {
+        TODO("Not yet implemented")
+    }
 }

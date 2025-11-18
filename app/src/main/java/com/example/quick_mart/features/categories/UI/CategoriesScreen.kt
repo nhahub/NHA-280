@@ -146,7 +146,10 @@ fun CategoriesScreen() {
                             .padding(8.dp)
                     ) {
                         items(productsState) { product ->
-                            ProductItem(product)
+                            ProductItem(
+                                product = product,
+                                onFavoriteClick = { viewModel.toggleFavorite(product) }
+                            )
                         }
                     }
                 }
@@ -186,57 +189,6 @@ fun CategoryItem(name: String, imageUrl: String, onClick: () -> Unit) {
     }
 }
 
-@Composable
-fun ProductItem(
-    product: Product,
-    onFavoriteClick: (Product) -> Unit
-) {
-    Card(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(vertical = 8.dp),
-        elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)
-    ) {
-
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(16.dp),
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-
-            Column(
-                modifier = Modifier.weight(1f)
-            ) {
-                Text(
-                    text = product.title ?: "No title",
-                    style = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.Bold)
-                )
-                Spacer(modifier = Modifier.height(4.dp))
-                Text(
-                    text = product.description ?: "No description",
-                    style = MaterialTheme.typography.bodyMedium
-                )
-                Spacer(modifier = Modifier.height(6.dp))
-                Text(
-                    text = "Price: ${product.price ?: 0}",
-                    style = MaterialTheme.typography.bodyLarge.copy(fontWeight = FontWeight.SemiBold),
-                    color = MaterialTheme.colorScheme.primary
-                )
-            }
-
-            IconButton(onClick = { onFavoriteClick(product) }) {
-                Icon(
-                    imageVector = if (product.isFavorite)
-                        Icons.Filled.Favorite
-                    else
-                        Icons.Outlined.FavoriteBorder,
-                    contentDescription = "Toggle favorite"
-                )
-            }
-        }
-    }
-}
 
 //favorites
 @Composable
@@ -286,7 +238,9 @@ fun ProductItem(
                 )
             }
 
-            // ❤️ Favorite Icon
+
+
+            //  Favorite Icon
             IconButton(onClick = { onFavoriteClick(product) }) {
                 Icon(
                     imageVector = if (product.isFavorite)
