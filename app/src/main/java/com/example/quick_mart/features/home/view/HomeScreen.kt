@@ -1,11 +1,13 @@
-package com.example.quickmart
+package com.example.quick_mart.features.home.view
 
-import android.R
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
+import androidx.compose.foundation.lazy.grid.items
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -18,34 +20,38 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-@Preview
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import coil.compose.AsyncImage
+import com.example.quick_mart.dto.Category
+import com.example.quick_mart.dto.Product
+import com.example.quick_mart.features.home.viewmodel.HomeViewModel
+import com.example.quick_mart.ui.theme.QuickMartTheme1
+
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun QuickMartHomeScreen() {
+fun HomeScreenContent(
+    products: List<Product>,
+    categories: List<Category>,
+    onSeeAllCategoriesClick: () -> Unit,
+    onProductClick: (product: Product) -> Unit,
+    onCategoryClick: (category: Category) -> Unit,
+) {
     Scaffold(
         topBar = {
             TopAppBar(
                 title = {
                     Row(verticalAlignment = Alignment.CenterVertically) {
-                        Box(
-                            modifier = Modifier
-                                .size(32.dp)
-                                .background(Color(0xFF00D9B5), CircleShape),
-                            contentAlignment = Alignment.Center
-                        ) {
-                            Text("Q", color = Color.White, fontWeight = FontWeight.Bold)
-                        }
-                        Spacer(modifier = Modifier.width(2.dp))
+                        Text("Q", color = MaterialTheme.colorScheme.primary, fontWeight = FontWeight.Bold)
                         Text(
                             "uickMart",
-                            color = Color.White,
+                            color = MaterialTheme.colorScheme.onBackground,
                             fontWeight = FontWeight.Bold,
                             fontSize = 20.sp
 
@@ -54,19 +60,19 @@ fun QuickMartHomeScreen() {
                 },
                 actions = {
                     IconButton(onClick = {}) {
-                        Icon(Icons.Default.Search,contentDescription = "Search", tint = Color.White, modifier = Modifier.size(40.dp)
+                        Icon(Icons.Default.Search,contentDescription = "Search", tint = MaterialTheme.colorScheme.onBackground, modifier = Modifier.size(40.dp)
                         )
                     }
                     IconButton(onClick = {}) {
-                        Icon(Icons.Default.Person, contentDescription = "Profile", tint = Color.White, modifier = Modifier.size(40.dp))
+                        Icon(Icons.Default.Person, contentDescription = "Profile", tint = MaterialTheme.colorScheme.onBackground, modifier = Modifier.size(40.dp))
                     }
                 },
                 colors = TopAppBarDefaults.topAppBarColors(
-                    containerColor = Color(0xFF1A1A1A)
+                    containerColor = MaterialTheme.colorScheme.background
                 )
             )
         },
-        containerColor = Color(0xFF1A1A1A)
+        containerColor = MaterialTheme.colorScheme.background
     ) { padding ->
         Column(
             modifier = Modifier
@@ -145,13 +151,15 @@ fun QuickMartHomeScreen() {
                     "Categories",
                     fontSize = 18.sp,
                     fontWeight = FontWeight.Bold,
-                    color = Color.White
+                    color = MaterialTheme.colorScheme.onBackground
                 )
                 Text(
                     "SEE ALL",
+                    modifier = Modifier.clickable(onClick = onSeeAllCategoriesClick),
                     fontSize = 12.sp,
-                    color = Color(0xFF00D9B5),
+                    color = MaterialTheme.colorScheme.primary,
                     fontWeight = FontWeight.SemiBold
+
                 )
             }
 
@@ -159,20 +167,10 @@ fun QuickMartHomeScreen() {
                 modifier = Modifier.padding(horizontal = 16.dp),
                 horizontalArrangement = Arrangement.spacedBy(16.dp)
             ) {
-                items(4) { index ->
+                items(categories) { category ->
                     CategoryItem(
-                        icon = when(index) {
-                            0 -> Icons.Default.Devices
-                            1 -> Icons.Default.Checkroom
-                            2 -> Icons.Default.Chair
-                            else -> Icons.Default.Warehouse
-                        },
-                        title = when(index) {
-                            0 -> "Electronics"
-                            1 -> "Fashion"
-                            2 -> "Furniture"
-                            else -> "Industrial"
-                        }
+                        category = category,
+                        onClick = { onCategoryClick(category) }
                     )
                 }
             }
@@ -191,12 +189,12 @@ fun QuickMartHomeScreen() {
                     "Latest Products",
                     fontSize = 18.sp,
                     fontWeight = FontWeight.Bold,
-                    color = Color.White
+                    color = MaterialTheme.colorScheme.onBackground
                 )
                 Text(
                     "SEE ALL",
                     fontSize = 12.sp,
-                    color = Color(0xFF00D9B5),
+                    color = MaterialTheme.colorScheme.primary ,
                     fontWeight = FontWeight.SemiBold
                 )
             }
@@ -210,39 +208,12 @@ fun QuickMartHomeScreen() {
                 horizontalArrangement = Arrangement.spacedBy(12.dp),
                 verticalArrangement = Arrangement.spacedBy(12.dp)
             ) {
-                items(4) { index ->
+                items(products) { product ->
                     ProductCard(
-                        title = when(index) {
-                            0 -> "Nike air jordan retro fa..."
-                            1 -> "Classic new black glas..."
-                            2 -> "Headphone white..."
-                            else -> "Wireless speaker..."
-                        },
-                        price = when(index) {
-                            0 -> "$126.00"
-                            1 -> "$8.50"
-                            2 -> "$45.00"
-                            else -> "$89.00"
-                        },
-                        oldPrice = when(index) {
-                            0 -> "$186.00"
-                            1 -> "$10.00"
-                            2 -> "$60.00"
-                            else -> "$120.00"
-                        },
-                        colors = when(index) {
-                            0 -> listOf(Color(0xFF00D9B5), Color(0xFF4CAF50), Color.Black, Color.Blue, Color.Gray)
-                            1 -> listOf(Color(0xFF00D9B5), Color(0xFFD2691E), Color.Black)
-                            2 -> listOf(Color(0xFF00D9B5), Color.White, Color.Gray)
-                            else -> listOf(Color.Black, Color(0xFF00D9B5), Color.Red)
-                        },
-                        bgColor = when(index) {
-                            0 -> Color(0xFFE4C4E8)
-                            1 -> Color(0xFFE8E8E8)
-                            2 -> Color(0xFFFFE4C4)
-                            else -> Color(0xFFD8E8E4)
-                        }
-                    )
+                        product = product, // Pass the whole product object
+                            onClick = { onProductClick(product) } // Pass the click event up
+                        )
+
                 }
             }
         }
@@ -250,29 +221,30 @@ fun QuickMartHomeScreen() {
 }
 
 @Composable
-fun CategoryItem(icon: ImageVector, title: String) {
+fun CategoryItem(category:Category,onClick: () -> Unit) {
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.spacedBy(8.dp)
+        verticalArrangement = Arrangement.spacedBy(8.dp),
+        modifier = Modifier.clickable(onClick = onClick)
     ) {
         Box(
             modifier = Modifier
                 .size(64.dp)
                 .clip(RoundedCornerShape(16.dp))
-                .background(Color(0xFF2A2A2A)),
+                .background(MaterialTheme.colorScheme.surface),
             contentAlignment = Alignment.Center
         ) {
-            Icon(
-                imageVector = icon,
-                contentDescription = title,
-                tint = Color.White,
-                modifier = Modifier.size(32.dp)
+            AsyncImage(
+                model = category.image, // Use the image URL from the category object
+                contentDescription = category.name, // Use the category name for accessibility
+                modifier = Modifier.fillMaxSize(), // Make the image fill the box
+                contentScale = ContentScale.Crop // Crop the image to fit beautifully
             )
         }
         Text(
-            title,
+            category.name?: "category",
             fontSize = 12.sp,
-            color = Color.White
+            color = MaterialTheme.colorScheme.onBackground
         )
     }
 }
@@ -281,26 +253,29 @@ fun CategoryItem(icon: ImageVector, title: String) {
 
 @Composable
 fun ProductCard(
-    title: String,
-    price: String,
-    oldPrice: String,
-    colors: List<Color>,
-    bgColor: Color
+    product: Product,
+    onClick: () -> Unit
 ) {
     Card(
         modifier = Modifier
             .fillMaxWidth()
-            .height(240.dp),
+            .height(240.dp)
+            .clickable(onClick = onClick),
         shape = RoundedCornerShape(16.dp),
-        colors = CardDefaults.cardColors(containerColor = Color(0xFF2A2A2A))
+        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface)
     ) {
         Column {
             Box(
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(140.dp)
-                    .background(bgColor)
             ) {
+                AsyncImage(
+                    model = product.images?.firstOrNull(),
+                    contentDescription = product.name,
+                    modifier = Modifier.fillMaxSize(),
+                    contentScale = ContentScale.Crop
+                )
                 IconButton(
                     onClick = {},
                     modifier = Modifier
@@ -310,7 +285,7 @@ fun ProductCard(
                     Icon(
                         Icons.Default.FavoriteBorder,
                         contentDescription = "Favorite",
-                        tint = Color(0xFF1A1A1A)
+                        tint = MaterialTheme.colorScheme.onSurface
                     )
                 }
             }
@@ -320,34 +295,11 @@ fun ProductCard(
                     .fillMaxWidth()
                     .padding(12.dp)
             ) {
-                // Color indicators
-                Row(
-                    horizontalArrangement = Arrangement.spacedBy(4.dp),
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    colors.take(3).forEach { color ->
-                        Box(
-                            modifier = Modifier
-                                .size(12.dp)
-                                .clip(CircleShape)
-                                .background(color)
-                        )
-                    }
-                    if (colors.size > 3) {
-                        Text(
-                            "All ${colors.size} Colors",
-                            fontSize = 10.sp,
-                            color = Color.Gray
-                        )
-                    }
-                }
-
-                Spacer(modifier = Modifier.height(8.dp))
 
                 Text(
-                    title,
+                    product.title ?: "No Title",
                     fontSize = 13.sp,
-                    color = Color.White,
+                    color = MaterialTheme.colorScheme.onSurface,
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis
                 )
@@ -359,19 +311,114 @@ fun ProductCard(
                     horizontalArrangement = Arrangement.spacedBy(6.dp)
                 ) {
                     Text(
-                        price,
+                        "$${product.price}",
                         fontSize = 16.sp,
                         fontWeight = FontWeight.Bold,
-                        color = Color.White
+                        color = MaterialTheme.colorScheme.onSurface
                     )
                     Text(
-                        oldPrice,
+                        "$${product.price?.plus(20)}",
                         fontSize = 12.sp,
-                        color = Color.Gray,
+                        color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.6f),
                         textDecoration = TextDecoration.LineThrough
                     )
                 }
             }
         }
+    }
+}
+
+
+@Composable
+fun HomeScreen(
+    // This is the stateful composable for your NavHost
+    viewModel: HomeViewModel,
+    onSeeAllCategoriesClick: () -> Unit,
+    onProductClick: (product: Product) -> Unit,
+    onCategoryClick: (category: Category) -> Unit,
+) {
+    // Observe state from your ViewModel here
+//    val products : viewModel.products.collectAsState() // Assuming you have a StateFlow for products
+//    val categories : viewModel.categories.collectAsState() // Assuming you have one for categories
+
+    val products = viewModel.products.collectAsStateWithLifecycle()
+    val categories = viewModel.categories.collectAsStateWithLifecycle()
+    // Call the stateless composable with the data
+    HomeScreenContent(
+        products = products as List<Product>,
+        categories = categories as List<Category>,
+        onSeeAllCategoriesClick = onSeeAllCategoriesClick,
+        onProductClick = onProductClick,
+        onCategoryClick = onCategoryClick
+    )
+}
+
+@Preview(showBackground = true)
+@Composable
+fun HomeScreenPreview() {
+    // Create some fake data for the preview
+    val fakeCategories = listOf(
+        Category(
+            id = 62,
+            name = "New Category",
+            image = "https://picsum.photos/200/300",
+            creationAt = "",
+            updatedAt = "",
+            slug = "slug"
+        ),
+        Category(
+            id = 63,
+            name = "Electronics",
+            image = "https://i.imgur.com/ZANVnHE.jpeg",
+            creationAt = "",
+            updatedAt = "",
+            slug = "slug"
+        )
+    )
+
+    val fakeProducts = listOf(
+        Product(
+            id = 399,
+            title = "Classic White Tee - Timeless Style and Comfort",
+            price = 73,
+            description = "Elevate your everyday wardrobe with our Classic White Tee.",
+            category = fakeCategories[0], // "New Category"
+            images = listOf(
+                "https://i.imgur.com/Y54Bt8J.jpeg",
+                "https://i.imgur.com/SZPDSgy.jpeg",
+                "https://i.imgur.com/sJv4Xx0.jpeg"
+            ),
+            creationAt = "",
+            updatedAt = "",
+            slug = "slug",
+            name = "name",
+        ),
+        Product(
+            id = 400,
+            title = "Sleek White & Orange Wireless Gaming Controller",
+            price = 69,
+            description = "Elevate your gaming experience with this state-of-the-art wireless controller.",
+            category = fakeCategories[1], // "Electronics"
+            images = listOf(
+                "https://i.imgur.com/ZANVnHE.jpeg",
+                "https://i.imgur.com/Ro5z6Tn.jpeg",
+                "https://i.imgur.com/woA93Li.jpeg"
+            ),
+            creationAt = "",
+            updatedAt = "",
+            slug = "slug",
+            name = "name",
+        )
+    )
+
+    // Wrap the preview in your theme
+    QuickMartTheme1 {
+        HomeScreenContent(
+            products = fakeProducts,
+            categories = fakeCategories,
+            onSeeAllCategoriesClick = {}, // For preview, the actions can be empty
+            onProductClick = {},
+            onCategoryClick = {}
+        )
     }
 }
