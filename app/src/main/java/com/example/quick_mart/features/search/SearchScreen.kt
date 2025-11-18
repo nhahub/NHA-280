@@ -65,6 +65,12 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.quick_mart.dto.Product
 
+//navigation
+import androidx.navigation.NavController
+@Composable
+fun SearchScreen(navController: NavController) {
+}
+
 class SearchScreen : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

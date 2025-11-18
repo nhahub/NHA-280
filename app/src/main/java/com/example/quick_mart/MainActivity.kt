@@ -22,6 +22,11 @@ import com.example.quick_mart.features.home.viewmodel.HomeViewModelFactory
 import com.example.quick_mart.network.RemoteDataSourceImp
 import com.example.quick_mart.ui.theme.QuickMartTheme1
 
+//nav
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Surface
+import com.example.quick_mart.features.navigation.MainApp
+
 
 
 class MainActivity : ComponentActivity() {
@@ -36,6 +41,12 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             QuickMartTheme1 {
+                Surface(
+                    modifier = Modifier.fillMaxSize(),
+                    color = MaterialTheme.colorScheme.background
+                ) {
+                    MainApp() // هنا بستدعي الـ MainApp من الفولدر الجديد
+                }
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
                     Box(
                         modifier = Modifier
@@ -46,8 +57,17 @@ class MainActivity : ComponentActivity() {
                         ApiButton(onClick = { viewModel.getResponseAndCache() })
                     }
                 }
+
             }
         }
+    }
+
+}
+@Preview(showBackground = true)
+@Composable
+fun MainAppPreview() {
+    QuickMartTheme1 {
+        MainApp()
     }
 }
 

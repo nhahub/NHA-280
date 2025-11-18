@@ -25,6 +25,8 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+//navigation
+import androidx.navigation.NavController
 @Preview
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -276,8 +278,10 @@ fun CategoryItem(icon: ImageVector, title: String) {
         )
     }
 }
-
-
+//navigation
+@Composable
+fun HomeScreen(navController: NavController) {
+}
 
 @Composable
 fun ProductCard(

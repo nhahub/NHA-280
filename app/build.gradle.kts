@@ -75,4 +75,14 @@ dependencies {
     kapt(libs.room.compiler)
     implementation(libs.androidx.runtime.livedata)
 
+    //nav
+    dependencies {
+        implementation("androidx.navigation:navigation-compose:2.7.7")
+        implementation("androidx.compose.material:material-icons-extended:1.6.3")
+
+        // Compose BOM
+        implementation(platform("androidx.compose:compose-bom:2024.02.02"))
+        implementation("androidx.compose.material3:material3")
+    }
+
 }

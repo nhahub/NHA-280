@@ -21,6 +21,12 @@ import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 import androidx.compose.ui.tooling.preview.Preview
 
+//navigation
+import androidx.navigation.NavController
+@Composable
+fun CheckOutScreen(navController: NavController) {
+}
+
 val Cyan = Color(0xFF21D4B4)
 val Cyan50 = Color(0xFF212322)
 val Black = Color(0xFF1C1B1B)

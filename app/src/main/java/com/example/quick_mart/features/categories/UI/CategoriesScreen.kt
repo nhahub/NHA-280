@@ -37,6 +37,14 @@ import androidx.compose.material.icons.outlined.FavoriteBorder
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import com.example.quick_mart.dto.Category
+
+//navigation
+import androidx.navigation.NavController
+@Composable
+fun CategoriesScreen(navController: NavController) {
+}
+
+
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun CategoriesScreen() {
