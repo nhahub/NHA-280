@@ -40,6 +40,9 @@ import com.example.quick_mart.dto.Category
 
 //navigation
 import androidx.navigation.NavController
+import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.compose.runtime.livedata.observeAsState
+import androidx.compose.ui.platform.LocalContext
 @Composable
 fun CategoriesScreen(navController: NavController) {
 }

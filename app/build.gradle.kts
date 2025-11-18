@@ -79,6 +79,8 @@ dependencies {
     dependencies {
         implementation("androidx.navigation:navigation-compose:2.7.7")
         implementation("androidx.compose.material:material-icons-extended:1.6.3")
+        // ViewModel
+        implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.7.0")
 
         // Compose BOM
         implementation(platform("androidx.compose:compose-bom:2024.02.02"))

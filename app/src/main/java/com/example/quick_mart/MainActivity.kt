@@ -29,7 +29,7 @@ import com.example.quick_mart.features.navigation.MainApp
 
 
 
-class MainActivity : ComponentActivity() {
+/*class MainActivity : ComponentActivity() {
     private val viewModel: HomeViewModel by viewModels{
         HomeViewModelFactory(HomeRepositoryImp(
             RemoteDataSourceImp(), LocalDataSourceImp(this)
@@ -83,5 +83,32 @@ fun ApiButton(onClick: () -> Unit) {
 fun ApiButtonPreview() {
     QuickMartTheme1 {
         ApiButton(onClick = {})
+    }
+}*/
+
+
+
+
+class MainActivity : ComponentActivity() {
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContent {
+            QuickMartTheme1 {
+                Surface(
+                    modifier = Modifier.fillMaxSize(),
+                    color = MaterialTheme.colorScheme.background
+                ) {
+                    MainApp() // ده هيظهر الـ Bottom Navigation
+                }
+            }
+        }
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+fun MainAppPreview() {
+    QuickMartTheme1 {
+        MainApp()
     }
 }

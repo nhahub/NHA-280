@@ -23,6 +23,9 @@ import androidx.compose.ui.tooling.preview.Preview
 
 //navigation
 import androidx.navigation.NavController
+import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.compose.runtime.livedata.observeAsState
+import androidx.compose.ui.platform.LocalContext
 @Composable
 fun CheckOutScreen(navController: NavController) {
 }
