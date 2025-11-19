@@ -10,10 +10,10 @@ sealed interface Routes {
     object Home:Routes
 
     @Serializable
-    data class Details( val product: Product?):Routes
+    data class Details( val productId: Int):Routes
 
     @Serializable
-    data class Categories(val category: Category?):Routes
+    data class Categories(val categoryId: Int):Routes
 
 
 }
