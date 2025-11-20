@@ -1,5 +1,6 @@
 package com.example.quick_mart
 
+import android.content.Intent
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -25,6 +26,8 @@ import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
+import com.example.quick_mart.Detailshome.BaymentActivity
+import com.example.quick_mart.features.checkout.CheckoutScreenActivity
 import com.example.quick_mart.features.home.viewmodel.HomeViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -282,9 +285,11 @@ fun ProductDetailsScreen(
                         horizontalArrangement = Arrangement.spacedBy(10.dp)
                     ) {
                         // Buy Now Button
+                        val context = LocalContext.current
                         Button(
                             onClick = {
-                                // TODO: Navigate to payment screen
+                                val intent = Intent(context, BaymentActivity::class.java)
+                                context.startActivity(intent)
                             },
                             colors = ButtonDefaults.buttonColors(
                                 containerColor = MaterialTheme.colorScheme.primary
@@ -305,7 +310,9 @@ fun ProductDetailsScreen(
                         // Add to Cart Button
                         Button(
                             onClick = {
-                                // TODO: Add to cart logic
+                                val intent = Intent(context, CheckoutScreenActivity::class.java)
+                                intent.putExtra("product", productId)   // send product
+                                context.startActivity(intent)
                             },
                             colors = ButtonDefaults.buttonColors(
                                 containerColor = MaterialTheme.colorScheme.primary

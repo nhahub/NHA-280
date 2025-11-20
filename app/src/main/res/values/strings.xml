@@ -4,4 +4,6 @@
     <string name="title_activity_bayment">BaymentActivity</string>
     <string name="title_activity_sucess_bayment">SucessBaymentActivity</string>
     <string name="title_activity_search_screen">SearchScreen</string>
+    <string name="title_activity_search">SearchActivity</string>
+    <string name="title_activity_checkout_screen">CheckoutScreenActivity</string>
 </resources>

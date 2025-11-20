@@ -17,4 +17,7 @@ interface APIService {
     suspend fun getProductsByCategoryResponse(
         @Query("category") categoryId: Int
     ): Response<List<Product>>
+
+    @GET ("Product")
+    suspend fun getProductName(): Response<List<Product>>
 }
