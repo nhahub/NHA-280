@@ -51,7 +51,7 @@ class CheckoutScreenActivity : ComponentActivity() {
         setContent {
             QuickMartTheme {
                 val navController = rememberNavController()
-                CheckoutApp(navController)
+                CheckoutApp(navController , productId)
             }
         }
     }
