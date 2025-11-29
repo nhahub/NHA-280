@@ -42,6 +42,7 @@ import com.example.quick_mart.features.checkout.CheckoutScreenActivity
 import com.example.quick_mart.features.home.repo.HomeRepositoryImp
 import com.example.quick_mart.features.home.view.HomeScreen
 import com.example.quick_mart.features.home.view.ProductCard
+import com.example.quick_mart.features.home.view.ProductsForCategoryScreen
 import com.example.quick_mart.features.home.viewmodel.HomeViewModel
 import com.example.quick_mart.features.home.viewmodel.HomeViewModelFactory
 import com.example.quick_mart.network.RemoteDataSourceImp
@@ -115,79 +116,7 @@ class MainActivity : ComponentActivity() {
     }
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
-@Composable
-fun ProductsForCategoryScreen(
-    categoryId: Int?,
-    viewModel: HomeViewModel,
-    onBackClick: () -> Unit,
-    onProductClick: (Product) -> Unit
-) {
-    val products = viewModel.products.collectAsStateWithLifecycle()
-    val categories = viewModel.categories.collectAsStateWithLifecycle()
 
-    val selectedCategory = remember(categories.value, categoryId) {
-        categoryId?.let { id -> categories.value.find { it.id == id } }
-    }
-
-    val filteredProducts = remember(products.value, categoryId) {
-        if (categoryId == null) {
-            products.value
-        } else {
-            products.value.filter { it.category?.id == categoryId }
-        }
-    }
-
-    Scaffold(
-        topBar = {
-            TopAppBar(
-                title = {
-                    Text(
-                        text = selectedCategory?.name ?: "All Categories"
-                    )
-                },
-                navigationIcon = {
-                    IconButton(onClick = onBackClick) {
-                        Icon(
-                            imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                            contentDescription = "Back"
-                        )
-                    }
-                },
-                colors = TopAppBarDefaults.topAppBarColors(
-                    containerColor = MaterialTheme.colorScheme.background
-                )
-            )
-        }
-    ) { padding ->
-        if (filteredProducts.isEmpty()) {
-            Box(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .padding(padding),
-                contentAlignment = Alignment.Center
-            ) {
-                Text("No products found in this category")
-            }
-        } else {
-            LazyVerticalGrid(
-                columns = GridCells.Fixed(2),
-                modifier = Modifier
-                    .fillMaxSize()
-                    .padding(start = 16.dp, top = 120.dp, end = 16.dp, bottom = 16.dp),
-                horizontalArrangement = Arrangement.spacedBy(12.dp),
-                verticalArrangement = Arrangement.spacedBy(12.dp)
-            ) {
-                items(filteredProducts) { product ->
-                    ProductCard(
-                        product = product,
-                        onClick = { onProductClick(product) }
-                    )
-                }
-            }
-        }
-    }
-}
 
 
 @Composable
