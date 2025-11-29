@@ -58,12 +58,8 @@ fun CategoriesScreen() {
         RemoteDataSourceImp(),
         LocalDataSourceImp(context)
     )
-    val homeRepository= HomeRepositoryImp(
-        RemoteDataSourceImp(),
-        LocalDataSourceImp(context)
-    )
     val viewModel: CategoriesViewModel = viewModel(
-        factory = CategoriesViewModelFactory(repository=repository,homeRepository = homeRepository)
+        factory = CategoriesViewModelFactory(repository=repository)
     )
 
    // val favorites by viewModel.favoriteProducts.observeAsState(emptyList())

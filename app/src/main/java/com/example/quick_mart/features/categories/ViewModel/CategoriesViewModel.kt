@@ -11,8 +11,6 @@ import kotlinx.coroutines.launch
 import com.example.quick_mart.features.home.repo.HomeRepository
 class CategoriesViewModel(
     private val repository: CategoriesRepository,
-
-    private val homeRepository: HomeRepository
 ) : ViewModel() {
 
     // CATEGORIES DATA
