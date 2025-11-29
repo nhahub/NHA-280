@@ -24,6 +24,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.quick_mart.dto.Product
+import com.example.quick_mart.features.home.view.composables.ProductCard
 import com.example.quick_mart.features.home.viewmodel.HomeViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)

@@ -20,21 +20,18 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextDecoration
-import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import coil.compose.AsyncImage
 import com.example.quick_mart.dto.Category
 import com.example.quick_mart.dto.Product
 import com.example.quick_mart.features.home.viewmodel.HomeViewModel
 import com.example.quick_mart.ui.theme.QuickMartTheme1
-import com.example.quick_mart.R
+import com.example.quick_mart.features.home.view.composables.CategoryItem
+import com.example.quick_mart.features.home.view.composables.HeroBanner
+import com.example.quick_mart.features.home.view.composables.ProductCard
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -53,12 +50,12 @@ fun HomeScreenContent(
             TopAppBar(
                 title = {
                     Row(verticalAlignment = Alignment.CenterVertically) {
-                        Text("Q", color = MaterialTheme.colorScheme.primary, fontWeight = FontWeight.Bold)
+                        Text("Q", color = MaterialTheme.colorScheme.primary, fontWeight = FontWeight.Bold, fontSize = 24.sp)
                         Text(
                             "uickMart",
                             color = MaterialTheme.colorScheme.onBackground,
                             fontWeight = FontWeight.Bold,
-                            fontSize = 20.sp
+                            fontSize = 24.sp
                         )
                     }
                 },
@@ -114,67 +111,10 @@ fun HomeScreenContent(
                     .verticalScroll(rememberScrollState())
             ) {
                 // Hero Banner
-                Box(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(16.dp)
-                        .height(180.dp)
-                        .clip(RoundedCornerShape(24.dp))
-                        .background(Color(0xFF6BA5D8))
-                ) {
-                    Column(
-                        modifier = Modifier
-                            .padding(24.dp)
-                            .fillMaxHeight(),
-                        verticalArrangement = Arrangement.Center
-                    ) {
-                        Surface(
-                            color = Color.White,
-                            shape = RoundedCornerShape(8.dp)
-                        ) {
-                            Text(
-                                "30% OFF",
-                                modifier = Modifier.padding(horizontal = 12.dp, vertical = 6.dp),
-                                fontWeight = FontWeight.Bold,
-                                fontSize = 12.sp,
-                                color = Color(0xFF1A1A1A)
-                            )
-                        }
-                        Spacer(modifier = Modifier.height(8.dp))
-                        Text(
-                            "On Headphones",
-                            color = Color(0xFF1A1A1A),
-                            fontSize = 14.sp
-                        )
-                        Text(
-                            "Exclusive Sales",
-                            color = Color(0xFF1A1A1A),
-                            fontSize = 24.sp,
-                            fontWeight = FontWeight.Bold
-                        )
-                    }
-
-                    // Dots indicator
-                    Row(
-                        modifier = Modifier
-                            .align(Alignment.BottomEnd)
-                            .padding(16.dp),
-                        horizontalArrangement = Arrangement.spacedBy(6.dp)
-                    ) {
-                        repeat(5) { index ->
-                            Box(
-                                modifier = Modifier
-                                    .size(8.dp)
-                                    .clip(CircleShape)
-                                    .background(
-                                        if (index == 0) Color.White else Color.White.copy(
-                                            alpha = 0.3f
-                                        )
-                                    )
-                            )
-                        }
-                    }
-                }
+                HeroBanner(
+                    products = products,
+                    onProductClick = onProductClick
+                )
 
                 // Categories Section
                 Row(
@@ -300,119 +240,6 @@ fun HomeScreenContent(
     }
 }
 
-@Composable
-fun CategoryItem(category: Category, onClick: () -> Unit) {
-    Column(
-        horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.spacedBy(8.dp),
-        modifier = Modifier.clickable(onClick = onClick)
-    ) {
-        Box(
-            modifier = Modifier
-                .size(64.dp)
-                .clip(RoundedCornerShape(16.dp))
-                .background(MaterialTheme.colorScheme.surface),
-            contentAlignment = Alignment.Center
-        ) {
-            AsyncImage(
-                placeholder = painterResource(id = R.drawable.notfoundimage),
-                error = painterResource(id = R.drawable.notfoundimage),
-                // This ensures the placeholder is also used if the URL is null/empty.
-                fallback = painterResource(id = R.drawable.notfoundimage),
-                model = category.image,
-                contentDescription = category.name,
-                modifier = Modifier.fillMaxSize(),
-                contentScale = ContentScale.Crop
-
-            )
-        }
-        Text(
-            category.name ?: "category",
-            fontSize = 12.sp,
-            color = MaterialTheme.colorScheme.onBackground
-        )
-    }
-}
-
-@Composable
-fun ProductCard(
-    product: Product,
-    onClick: () -> Unit
-) {
-    Card(
-        modifier = Modifier
-            .fillMaxWidth()
-            .height(220.dp)
-            .clickable(onClick = onClick),
-        shape = RoundedCornerShape(16.dp),
-        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface)
-    ) {
-        Column {
-            Box(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(140.dp)
-            ) {
-                AsyncImage(
-                    model = product.images?.firstOrNull(),
-                    placeholder = painterResource(id = R.drawable.notfoundimage),
-                    error = painterResource(id = R.drawable.notfoundimage),
-                    // This ensures the placeholder is also used if the URL is null/empty.
-                    fallback = painterResource(id = R.drawable.notfoundimage),
-                    contentDescription = product.name,
-                    modifier = Modifier.fillMaxSize(),
-                    contentScale = ContentScale.Crop,
-                )
-                IconButton(
-                    onClick = {},
-                    modifier = Modifier
-                        .align(Alignment.TopEnd)
-                        .padding(8.dp)
-                ) {
-                    Icon(
-                        Icons.Default.FavoriteBorder,
-                        contentDescription = "Favorite",
-                        tint = MaterialTheme.colorScheme.onSurface
-                    )
-                }
-            }
-
-            Column(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(12.dp)
-            ) {
-                Text(
-                    product.title ?: "No Title",
-                    fontSize = 13.sp,
-                    color = MaterialTheme.colorScheme.onSurface,
-                    maxLines = 1,
-                    overflow = TextOverflow.Ellipsis
-                )
-
-                Spacer(modifier = Modifier.height(4.dp))
-
-                Row(
-                    verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.spacedBy(6.dp)
-                ) {
-                    Text(
-                        "$${product.price}",
-                        fontSize = 16.sp,
-                        fontWeight = FontWeight.Bold,
-                        color = MaterialTheme.colorScheme.onSurface
-                    )
-                    Text(
-                        "$${product.price?.plus(20)}",
-                        fontSize = 12.sp,
-                        color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.6f),
-                        textDecoration = TextDecoration.LineThrough
-                    )
-                }
-            }
-        }
-    }
-}
 
 @Composable
 fun HomeScreen(
