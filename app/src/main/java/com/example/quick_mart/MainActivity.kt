@@ -23,6 +23,7 @@ import androidx.navigation.toRoute
 import com.example.quick_mart.db.LocalDataSourceImp
 import com.example.quick_mart.features.checkout.CheckoutScreenActivity
 import com.example.quick_mart.features.home.repo.HomeRepositoryImp
+import com.example.quick_mart.features.home.view.AllProductsScreen
 import com.example.quick_mart.features.home.view.HomeScreen
 import com.example.quick_mart.features.home.view.ProductsForCategoryScreen
 import com.example.quick_mart.features.home.viewmodel.HomeViewModel
@@ -55,15 +56,34 @@ class MainActivity : ComponentActivity() {
                         HomeScreen(
                             viewModel = viewModel,
                             onSeeAllCategoriesClick = {
-//                                navController.navigate(Routes.Categories(null))
+                                // navController.navigate(Routes.Categories(null))
+                            },
+                            onSeeAllProductsClick = {  // NEW CALLBACK
+                                navController.navigate(Routes.AllProducts)
                             },
                             onProductClick = { product ->
                                 navController.navigate(Routes.Details(product.id))
                             },
                             onCategoryClick = { category ->
-                                navController.navigate(Routes.Categories(category.id?:0))
+                                navController.navigate(Routes.Categories(category.id ?: 0))
                             },
                             onRetry = { viewModel.getResponseAndCache() }
+                        )
+                    }
+
+                    // NEW - All Products Screen
+                    composable<Routes.AllProducts> {
+                        AllProductsScreen(
+                            viewModel = viewModel,
+                            onProductClick = { product ->
+                                navController.navigate(Routes.Details(product.id))
+                            },
+                            onBackClick = {
+                                navController.popBackStack()
+                            },
+                            onRetry = {
+                                viewModel.getResponseAndCache()
+                            }
                         )
                     }
 
@@ -97,9 +117,6 @@ class MainActivity : ComponentActivity() {
         }
     }
 }
-
-
-
 
 @Composable
 fun DraggableFloatingButton() {

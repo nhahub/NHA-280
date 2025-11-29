@@ -9,8 +9,6 @@ import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.*
@@ -18,7 +16,6 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
@@ -41,6 +38,7 @@ fun HomeScreenContent(
     isLoading: Boolean,
     error: String?,
     onSeeAllCategoriesClick: () -> Unit,
+    onSeeAllProductsClick: () -> Unit, // NEW
     onProductClick: (product: Product) -> Unit,
     onCategoryClick: (category: Category) -> Unit,
     onRetry: () -> Unit
@@ -68,14 +66,6 @@ fun HomeScreenContent(
                             modifier = Modifier.size(40.dp)
                         )
                     }
-//                    IconButton(onClick = {}) {
-//                        Icon(
-//                            Icons.Default.Person,
-//                            contentDescription = "Profile",
-//                            tint = MaterialTheme.colorScheme.onBackground,
-//                            modifier = Modifier.size(40.dp)
-//                        )
-//                    }
                 },
                 colors = TopAppBarDefaults.topAppBarColors(
                     containerColor = MaterialTheme.colorScheme.background
@@ -84,12 +74,11 @@ fun HomeScreenContent(
         },
         containerColor = MaterialTheme.colorScheme.background,
         snackbarHost = {
-            // Show error message if exists
             error?.let {
                 Snackbar(
                     action = {
-                        TextButton(onClick = onRetry) { // <-- USE onRetry HERE
-                            Text("Retry") // <-- CHANGE "Dismiss" to "Retry"
+                        TextButton(onClick = onRetry) {
+                            Text("Retry")
                         }
                     },
                     modifier = Modifier.padding(16.dp)
@@ -104,7 +93,6 @@ fun HomeScreenContent(
                 .fillMaxSize()
                 .padding(padding)
         ) {
-            // Main content
             Column(
                 modifier = Modifier
                     .fillMaxSize()
@@ -139,7 +127,6 @@ fun HomeScreenContent(
                     )
                 }
 
-                // Show message if no categories
                 if (categories.isEmpty() && !isLoading) {
                     Box(
                         modifier = Modifier
@@ -184,14 +171,17 @@ fun HomeScreenContent(
                     )
                     Text(
                         "SEE ALL",
+                        modifier = Modifier.clickable(onClick = onSeeAllProductsClick), // UPDATED
                         fontSize = 12.sp,
                         color = MaterialTheme.colorScheme.primary,
                         fontWeight = FontWeight.SemiBold
                     )
                 }
 
-                // Show message if no products
-                if (products.isEmpty() && !isLoading) {
+                // Show only 10 products - UPDATED
+                val displayProducts = products.take(10)
+
+                if (displayProducts.isEmpty() && !isLoading) {
                     Box(
                         modifier = Modifier
                             .fillMaxWidth()
@@ -213,7 +203,7 @@ fun HomeScreenContent(
                         horizontalArrangement = Arrangement.spacedBy(12.dp),
                         verticalArrangement = Arrangement.spacedBy(12.dp)
                     ) {
-                        items(products) { product ->
+                        items(displayProducts) { product ->
                             ProductCard(
                                 product = product,
                                 onClick = { onProductClick(product) }
@@ -223,7 +213,6 @@ fun HomeScreenContent(
                 }
             }
 
-            // Loading indicator overlay
             if (isLoading) {
                 Box(
                     modifier = Modifier
@@ -240,33 +229,31 @@ fun HomeScreenContent(
     }
 }
 
-
 @Composable
 fun HomeScreen(
     viewModel: HomeViewModel,
     onSeeAllCategoriesClick: () -> Unit,
+    onSeeAllProductsClick: () -> Unit, // NEW
     onProductClick: (product: Product) -> Unit,
     onCategoryClick: (category: Category) -> Unit,
     onRetry: () -> Unit
 ) {
-    // Trigger data fetch on first composition
     LaunchedEffect(Unit) {
         viewModel.getResponseAndCache()
     }
 
-    // Collect state from ViewModel
     val products = viewModel.products.collectAsStateWithLifecycle()
     val categories = viewModel.categories.collectAsStateWithLifecycle()
     val isLoading = viewModel.isLoading.collectAsStateWithLifecycle()
     val error = viewModel.error.collectAsStateWithLifecycle()
 
-    // Call the stateless composable with the data
     HomeScreenContent(
         products = products.value,
         categories = categories.value,
         isLoading = isLoading.value,
         error = error.value,
         onSeeAllCategoriesClick = onSeeAllCategoriesClick,
+        onSeeAllProductsClick = onSeeAllProductsClick, // NEW
         onProductClick = onProductClick,
         onCategoryClick = onCategoryClick,
         onRetry = onRetry
@@ -276,7 +263,6 @@ fun HomeScreen(
 @Preview(showBackground = true)
 @Composable
 fun HomeScreenPreview() {
-    // Create some fake data for the preview
     val fakeCategories = listOf(
         Category(
             id = 62,
@@ -331,7 +317,6 @@ fun HomeScreenPreview() {
         )
     )
 
-    // Wrap the preview in your theme
     QuickMartTheme1 {
         HomeScreenContent(
             products = fakeProducts,
@@ -339,42 +324,7 @@ fun HomeScreenPreview() {
             isLoading = false,
             error = null,
             onSeeAllCategoriesClick = {},
-            onProductClick = {},
-            onCategoryClick = {},
-            onRetry = {}
-        )
-    }
-}
-
-// Preview with loading state
-@Preview(showBackground = true)
-@Composable
-fun HomeScreenLoadingPreview() {
-    QuickMartTheme1 {
-        HomeScreenContent(
-            products = emptyList(),
-            categories = emptyList(),
-            isLoading = true,
-            error = null,
-            onSeeAllCategoriesClick = {},
-            onProductClick = {},
-            onCategoryClick = {},
-            onRetry = {}
-        )
-    }
-}
-
-// Preview with error state
-@Preview(showBackground = true)
-@Composable
-fun HomeScreenErrorPreview() {
-    QuickMartTheme1 {
-        HomeScreenContent(
-            products = emptyList(),
-            categories = emptyList(),
-            isLoading = false,
-            error = "Failed to load data. Please check your internet connection.",
-            onSeeAllCategoriesClick = {},
+            onSeeAllProductsClick = {},
             onProductClick = {},
             onCategoryClick = {},
             onRetry = {}

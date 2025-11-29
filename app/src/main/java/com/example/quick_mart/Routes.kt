@@ -15,5 +15,7 @@ sealed interface Routes {
     @Serializable
     data class Categories(val categoryId: Int):Routes
 
+    @Serializable
+    object AllProducts : Routes
 
 }
