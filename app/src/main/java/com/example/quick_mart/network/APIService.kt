@@ -5,6 +5,7 @@ import com.example.quick_mart.dto.Category
 import com.example.quick_mart.dto.Product
 import retrofit2.Response
 import retrofit2.http.GET
+import retrofit2.http.Path
 
 interface APIService {
 
@@ -18,6 +19,8 @@ interface APIService {
         @Query("category") categoryId: Int
     ): Response<List<Product>>
 
-    @GET ("Product")
-    suspend fun getProductName(): Response<List<Product>>
+    @GET("product/{id}")
+    suspend fun getProductsId(
+        @Path("id") id: Int
+    ): Response<Product>
 }
