@@ -5,18 +5,25 @@ import kotlinx.serialization.Serializable
 sealed interface Routes {
 
     @Serializable
-    object Home:Routes
+    object Home : Routes
 
     @Serializable
-    data class Details( val productId: Int):Routes
+    data class Details(val productId: Int) : Routes
 
     @Serializable
-    data class Category(val categoryId: Int):Routes
+    data class Category(val categoryId: Int) : Routes
 
     @Serializable
-    object Categories:Routes
+    object Categories : Routes
 
     @Serializable
     object AllProducts : Routes
+
+    @Serializable
+    object Cart : Routes  // NEW
+
+    @Serializable
+    object Payment : Routes  // NEW
+
 
 }

@@ -1,7 +1,9 @@
 package com.example.quick_mart.db
 
+import com.example.quick_mart.dto.CartItemEntity
 import com.example.quick_mart.dto.Category
 import com.example.quick_mart.dto.Product
+import kotlinx.coroutines.flow.Flow
 
 interface LocalDataSource {
     suspend fun insertProduct(product: Product)
@@ -16,6 +18,13 @@ interface LocalDataSource {
     suspend fun updateFavoriteStatus(productId: Int, isFav: Boolean)
     suspend fun getFavoriteProducts(): List<Product>
 
-
+    //cart
+    suspend fun insertCartItem(cartItem: CartItemEntity)
+    fun getCartItems(): Flow<List<CartItemEntity>>
+    suspend fun getCartItemsList(): List<CartItemEntity>
+    suspend fun updateCartQuantity(productId: Int, quantity: Int)
+    suspend fun deleteCartItem(productId: Int)
+    suspend fun clearCart()
+    suspend fun getCartItemByProductId(productId: Int): CartItemEntity?
 
 }

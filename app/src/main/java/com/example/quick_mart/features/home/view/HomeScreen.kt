@@ -96,6 +96,7 @@ fun HomeScreenContent(
                 modifier = Modifier
                     .fillMaxSize()
                     .verticalScroll(rememberScrollState())
+                    .padding(bottom = 80.dp)
             ) {
                 // Hero Banner
                 HeroBanner(
@@ -210,6 +211,7 @@ fun HomeScreenContent(
                             )
                         }
                     }
+                    Spacer(modifier = Modifier.height(16.dp))
                 }
             }
 

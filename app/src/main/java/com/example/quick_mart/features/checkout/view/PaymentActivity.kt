@@ -1,105 +1,114 @@
 package com.example.quick_mart.features.checkout.view
 
 import android.content.Intent
-import android.os.Bundle
-import android.widget.Toast
-import androidx.activity.ComponentActivity
-import androidx.activity.compose.setContent
-import androidx.activity.enableEdgeToEdge
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.OutlinedTextField
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material3.*
+import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.compose.material3.*
-import androidx.compose.ui.platform.LocalContext
 
-
-class PaymentActivity : ComponentActivity() {
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        enableEdgeToEdge()
-        setContent {
-            PaymentScreen()
-        }
-    }
-}
-
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun PaymentScreen(onSaveClick: () -> Unit = {}) {
-    val cardNumber = remember { mutableStateOf("") }
-    val cardHolder = remember { mutableStateOf("") }
-    val expiryDate = remember { mutableStateOf("") }
-    val cvv = remember { mutableStateOf("") }
+fun PaymentScreen(
+    onBackClick: () -> Unit,
+) {
+    val context = LocalContext.current
+
+    // Fields
+    var name by remember { mutableStateOf("") }
+    var phoneNumber by remember { mutableStateOf("") }
+    var address by remember { mutableStateOf("") }
+    var cardNumber by remember { mutableStateOf("") }
+    var cardHolder by remember { mutableStateOf("") }
+    var expiryDate by remember { mutableStateOf("") }
+    var cvv by remember { mutableStateOf("") }
+
+    // Validation error states
+    var nameError by remember { mutableStateOf(false) }
+    var phoneError by remember { mutableStateOf(false) }
+    var addressError by remember { mutableStateOf(false) }
+    var cardNumberError by remember { mutableStateOf(false) }
+    var cardHolderError by remember { mutableStateOf(false) }
+    var expiryError by remember { mutableStateOf(false) }
+    var cvvError by remember { mutableStateOf(false) }
+
+    // Validation Function
+    fun validate(): Boolean {
+        nameError = name.isBlank()
+        phoneError = phoneNumber.length != 11
+        addressError = address.isBlank()
+        cardNumberError = cardNumber.length != 16
+        cardHolderError = cardHolder.isBlank()
+        expiryError = !expiryDate.matches(Regex("^(0[1-9]|1[0-2])/[0-9]{2}\$"))
+        cvvError = cvv.length != 3
+
+        return !(nameError || phoneError || addressError ||
+                cardNumberError || cardHolderError ||
+                expiryError || cvvError)
+    }
 
     Scaffold(
-        containerColor = Color(0xFF1A1A1A),
+        topBar = {
+            TopAppBar(
+                title = {
+                    Text(
+                        text = "Payment",
+                        fontSize = 22.sp,
+                        fontWeight = FontWeight.Bold,
+                        color = MaterialTheme.colorScheme.onBackground
+                    )
+                },
+                navigationIcon = {
+                    IconButton(onClick = onBackClick) {
+                        Icon(
+                            imageVector = Icons.Default.ArrowBack,
+                            contentDescription = "Back",
+                            tint = MaterialTheme.colorScheme.onBackground
+                        )
+                    }
+                },
+                colors = TopAppBarDefaults.topAppBarColors(
+                    containerColor = MaterialTheme.colorScheme.background
+                ),
+                modifier = Modifier.statusBarsPadding()
+            )
+        },
         bottomBar = {
-            Box(
+            Button(
+                onClick = {
+                    if (validate()) {
+                        val intent = Intent(context, SuccessPaymentActivity::class.java)
+                        context.startActivity(intent)
+                    }
+                },
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = MaterialTheme.colorScheme.primary
+                ),
+                shape = RoundedCornerShape(10.dp),
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(16.dp)
+                    .height(70.dp)
+                    .navigationBarsPadding()
             ) {
-                val context = LocalContext.current
-                Button(
-                    onClick = {
-                        when {
-                            cardNumber.value.isBlank() ||
-                                    cardHolder.value.isBlank() ||
-                                    expiryDate.value.isBlank() ||
-                                    cvv.value.isBlank() -> {
-                                Toast.makeText(context, "Please fill all fields", Toast.LENGTH_SHORT).show()
-                            }
-
-                            !cardNumber.value.matches(Regex("^\\d{16}\$")) -> {
-                                Toast.makeText(context, "Card number must be 16 digits", Toast.LENGTH_SHORT).show()
-                            }
-
-                            !cvv.value.matches(Regex("^\\d{3}\$")) -> {
-                                Toast.makeText(context, "CVV must be 3 digits", Toast.LENGTH_SHORT).show()
-                            }
-
-                            else -> {
-                                val intent = Intent(context, SuccessPaymentActivity::class.java)
-                                context.startActivity(intent)
-                            }
-                        }
-                    },
-                    colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF00DFA2)),
-                    shape = RoundedCornerShape(10.dp),
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .height(55.dp)
-                ) {
-                    Text(
-                        "Confirm",
-                        color = Color.White,
-                        fontSize = 18.sp,
-                        fontWeight = FontWeight.Bold
-                    )
-                }
+                Text(
+                    "Confirm",
+                    color = MaterialTheme.colorScheme.onPrimary,
+                    fontSize = 18.sp,
+                    fontWeight = FontWeight.Bold
+                )
             }
-        }
+            Spacer(modifier = Modifier.height(46.dp))
+        },
+        containerColor = MaterialTheme.colorScheme.background
     ) { padding ->
         Column(
             modifier = Modifier
@@ -108,108 +117,138 @@ fun PaymentScreen(onSaveClick: () -> Unit = {}) {
                 .padding(horizontal = 16.dp, vertical = 10.dp)
                 .verticalScroll(rememberScrollState())
         ) {
-            Text(
-                text = "Payment",
-                color = Color.White,
-                fontSize = 22.sp,
-                fontWeight = FontWeight.Bold,
-                modifier = Modifier.padding(bottom = 20.dp)
-            )
 
-            Text("Card Number *", color = Color.White, fontSize = 14.sp)
+            // Reusable Field function
+            @Composable
+            fun FieldLabel(text: String) {
+                Text(
+                    text,
+                    color = MaterialTheme.colorScheme.onBackground,
+                    fontSize = 14.sp
+                )
+            }
+
+            // Name Field
+            FieldLabel("Name *")
             OutlinedTextField(
-                value = cardNumber.value,
-                onValueChange = { cardNumber.value = it },
-                placeholder = { Text("Enter card number") },
+                value = name,
+                onValueChange = {
+                    name = it
+                    nameError = false
+                },
+                isError = nameError,
+                placeholder = { Text("Enter your name") },
                 singleLine = true,
+                modifier = Modifier.fillMaxWidth(),
                 colors = OutlinedTextFieldDefaults.colors(
-                    focusedBorderColor = Color(0xFF00DFA2),
-                    unfocusedBorderColor = Color.DarkGray,
-                    focusedTextColor = Color.White,
-                    unfocusedTextColor = Color.White,
-                    cursorColor = Color.White,
-                    focusedPlaceholderColor = Color.Gray,
-                    unfocusedPlaceholderColor = Color.Gray
-                ),
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(vertical = 8.dp)
+                    focusedBorderColor = MaterialTheme.colorScheme.primary,
+                    unfocusedBorderColor = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.3f),
+                )
             )
+            if (nameError) Text("Name is required", color = MaterialTheme.colorScheme.error)
+            Spacer(Modifier.height(10.dp))
 
-            Text("Card Holder Name *", color = Color.White, fontSize = 14.sp)
+            // Phone Number
+            FieldLabel("Phone Number *")
             OutlinedTextField(
-                value = cardHolder.value,
-                onValueChange = { cardHolder.value = it },
-                placeholder = { Text("Enter card holder name") },
+                value = phoneNumber,
+                onValueChange = {
+                    phoneNumber = it
+                    phoneError = false
+                },
+                isError = phoneError,
+                placeholder = { Text("Enter phone number") },
                 singleLine = true,
-                colors = OutlinedTextFieldDefaults.colors(
-                    focusedBorderColor = Color(0xFF00DFA2),
-                    unfocusedBorderColor = Color.DarkGray,
-                    focusedTextColor = Color.White,
-                    unfocusedTextColor = Color.White,
-                    cursorColor = Color.White,
-                    focusedPlaceholderColor = Color.Gray,
-                    unfocusedPlaceholderColor = Color.Gray
-                ),
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(vertical = 8.dp)
+                modifier = Modifier.fillMaxWidth(),
             )
+            if (phoneError) Text("Phone number must be 11 digits", color = MaterialTheme.colorScheme.error)
+            Spacer(Modifier.height(10.dp))
 
+            // Address
+            FieldLabel("Address *")
+            OutlinedTextField(
+                value = address,
+                onValueChange = {
+                    address = it
+                    addressError = false
+                },
+                isError = addressError,
+                placeholder = { Text("Enter your address") },
+                singleLine = true,
+                modifier = Modifier.fillMaxWidth()
+            )
+            if (addressError) Text("Address is required", color = MaterialTheme.colorScheme.error)
+            Spacer(Modifier.height(10.dp))
+
+            // Card Number
+            FieldLabel("Card Number *")
+            OutlinedTextField(
+                value = cardNumber,
+                onValueChange = {
+                    cardNumber = it.filter { it.isDigit() }
+                    cardNumberError = false
+                },
+                isError = cardNumberError,
+                placeholder = { Text("Enter 16-digit card number") },
+                singleLine = true,
+                modifier = Modifier.fillMaxWidth()
+            )
+            if (cardNumberError) Text("Card number must be 16 digits", color = MaterialTheme.colorScheme.error)
+            Spacer(Modifier.height(10.dp))
+
+            // Card Holder
+            FieldLabel("Card Holder Name *")
+            OutlinedTextField(
+                value = cardHolder,
+                onValueChange = {
+                    cardHolder = it
+                    cardHolderError = false
+                },
+                isError = cardHolderError,
+                placeholder = { Text("Name on card") },
+                singleLine = true,
+                modifier = Modifier.fillMaxWidth()
+            )
+            if (cardHolderError) Text("Card holder name is required", color = MaterialTheme.colorScheme.error)
+            Spacer(Modifier.height(10.dp))
+
+            // Row: Expiry + CVV
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.spacedBy(10.dp)
             ) {
                 Column(modifier = Modifier.weight(1f)) {
-                    Text("Expiry Date *", color = Color.White, fontSize = 14.sp)
+                    FieldLabel("Expiry Date *")
                     OutlinedTextField(
-                        value = expiryDate.value,
-                        onValueChange = { expiryDate.value = it },
+                        value = expiryDate,
+                        onValueChange = {
+                            expiryDate = it
+                            expiryError = false
+                        },
+                        isError = expiryError,
                         placeholder = { Text("MM/YY") },
                         singleLine = true,
-                        colors = OutlinedTextFieldDefaults.colors(
-                            focusedBorderColor = Color(0xFF00DFA2),
-                            unfocusedBorderColor = Color.DarkGray,
-                            focusedTextColor = Color.White,
-                            unfocusedTextColor = Color.White,
-                            cursorColor = Color.White,
-                            focusedPlaceholderColor = Color.Gray,
-                            unfocusedPlaceholderColor = Color.Gray
-                        ),
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(vertical = 8.dp)
+                        modifier = Modifier.fillMaxWidth()
                     )
+                    if (expiryError) Text("Invalid format (MM/YY)", color = MaterialTheme.colorScheme.error)
                 }
 
                 Column(modifier = Modifier.weight(1f)) {
-                    Text("CVV *", color = Color.White, fontSize = 14.sp)
+                    FieldLabel("CVV *")
                     OutlinedTextField(
-                        value = cvv.value,
-                        onValueChange = { cvv.value = it },
+                        value = cvv,
+                        onValueChange = {
+                            cvv = it.filter { it.isDigit() }
+                            cvvError = false
+                        },
+                        isError = cvvError,
                         placeholder = { Text("123") },
                         singleLine = true,
-                        colors = OutlinedTextFieldDefaults.colors(
-                            focusedBorderColor = Color(0xFF00DFA2),
-                            unfocusedBorderColor = Color.DarkGray,
-                            focusedTextColor = Color.White,
-                            unfocusedTextColor = Color.White,
-                            cursorColor = Color.White,
-                            focusedPlaceholderColor = Color.Gray,
-                            unfocusedPlaceholderColor = Color.Gray
-                        ),
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(vertical = 8.dp)
+                        modifier = Modifier.fillMaxWidth()
                     )
+                    if (cvvError) Text("CVV must be 3 digits", color = MaterialTheme.colorScheme.error)
                 }
             }
         }
     }
-}
-
-@Preview(showBackground = true, showSystemUi = true)
-@Composable
-fun PreviewPaymentScreen() {
-    PaymentScreen()
 }
