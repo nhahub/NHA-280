@@ -1,4 +1,4 @@
-package com.example.quick_mart.features.Detailshome
+package com.example.quick_mart.features.checkout.view
 
 import android.content.Intent
 import android.os.Bundle
@@ -36,7 +36,7 @@ import com.example.quick_mart.MainActivity
 import com.example.quick_mart.R
 
 
-class SucessBaymentActivity : ComponentActivity() {
+class SuccessPaymentActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()

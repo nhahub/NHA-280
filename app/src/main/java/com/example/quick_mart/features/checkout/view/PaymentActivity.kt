@@ -1,4 +1,4 @@
-package com.example.quick_mart.features.Detailshome
+package com.example.quick_mart.features.checkout.view
 
 import android.content.Intent
 import android.os.Bundle
@@ -35,7 +35,7 @@ import androidx.compose.material3.*
 import androidx.compose.ui.platform.LocalContext
 
 
-class BaymentActivity : ComponentActivity() {
+class PaymentActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
@@ -80,7 +80,7 @@ fun PaymentScreen(onSaveClick: () -> Unit = {}) {
                             }
 
                             else -> {
-                                val intent = Intent(context, SucessBaymentActivity::class.java)
+                                val intent = Intent(context, SuccessPaymentActivity::class.java)
                                 context.startActivity(intent)
                             }
                         }

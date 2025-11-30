@@ -26,8 +26,8 @@ import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
-import com.example.quick_mart.features.Detailshome.BaymentActivity
-import com.example.quick_mart.features.checkout.CheckoutScreenActivity
+import com.example.quick_mart.features.checkout.view.PaymentActivity
+import com.example.quick_mart.features.checkout.view.CheckoutActivity
 import com.example.quick_mart.features.home.viewmodel.HomeViewModel
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -288,7 +288,7 @@ fun ProductDetailsScreen(
                         val context = LocalContext.current
                         Button(
                             onClick = {
-                                val intent = Intent(context, BaymentActivity::class.java)
+                                val intent = Intent(context, PaymentActivity::class.java)
                                 context.startActivity(intent)
                             },
                             colors = ButtonDefaults.buttonColors(
@@ -310,7 +310,7 @@ fun ProductDetailsScreen(
                         // Add to Cart Button
                         Button(
                             onClick = {
-                                val intent = Intent(context, CheckoutScreenActivity::class.java)
+                                val intent = Intent(context, CheckoutActivity::class.java)
                                 intent.putExtra("product", productId)   // send product
                                 context.startActivity(intent)
                             },
