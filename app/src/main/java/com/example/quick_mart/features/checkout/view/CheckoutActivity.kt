@@ -1,3 +1,14 @@
+package com.example.quick_mart.features.checkout.view
+
+import android.content.Intent
+import android.os.Bundle
+import androidx.activity.ComponentActivity
+import androidx.activity.compose.setContent
+import androidx.activity.enableEdgeToEdge
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.Text
+import androidx.compose.runtime.Composable
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -14,18 +25,71 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
-import androidx.compose.ui.tooling.preview.Preview
-
-//navigation
 import androidx.navigation.NavController
-import androidx.lifecycle.viewmodel.compose.viewModel
-import androidx.compose.runtime.livedata.observeAsState
-import androidx.compose.ui.platform.LocalContext
+import androidx.navigation.NavHostController
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.rememberNavController
+import com.example.quick_mart.MainActivity
+import com.example.quick_mart.ui.theme.QuickMartTheme1
+
+
+class CheckoutActivity : ComponentActivity() {
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        enableEdgeToEdge()
+        val productId = intent.getIntExtra("productId", -1)
+        setContent {
+            QuickMartTheme1 {
+                val navController = rememberNavController()
+                CheckoutApp(navController , productId)
+            }
+        }
+    }
+}
+
+@Composable
+fun CheckoutApp(navController: NavHostController , productId: Int) {
+    NavHost(navController = navController, startDestination = "cartScreen") {
+        composable("cartScreen") {
+            Box(modifier = Modifier.fillMaxSize()) {
+                val context = LocalContext.current
+                CartScreen(
+                    cartItems = getSampleCartItems(),
+                    onBackClick = {
+                        val intent = Intent(context, MainActivity::class.java)
+                        context.startActivity(intent)
+                    }
+                )
+
+                // Floating Cart Button
+                FloatingActionButton(
+                    onClick = { /* Navigate somewhere, e.g., payment screen */ },
+                    modifier = Modifier
+                        .align(Alignment.BottomEnd)
+                        .padding(16.dp)
+                ) {
+                    Icon(Icons.Default.ShoppingCart, contentDescription = "Cart")
+                }
+            }
+        }
+
+        composable("paymentScreen") {
+            // Replace with your payment composable
+            Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+                Text("Payment Screen")
+            }
+        }
+    }
+
+}
+
 @Composable
 fun CheckOutScreen(navController: NavController) {
 }
@@ -424,9 +488,3 @@ private fun getSampleCartItems(): List<CartItem> {
     )
 }
 
-// Preview function
-@Preview(showBackground = true)
-@Composable
-fun CartScreenPreview() {
-    CartScreen()
-}

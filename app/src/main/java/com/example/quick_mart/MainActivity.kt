@@ -22,7 +22,7 @@ import androidx.navigation.compose.rememberNavController
 import androidx.navigation.toRoute
 import com.example.quick_mart.db.LocalDataSourceImp
 import com.example.quick_mart.features.categories.ui.CategoriesScreen
-import com.example.quick_mart.features.checkout.CheckoutScreenActivity
+import com.example.quick_mart.features.checkout.view.CheckoutActivity
 import com.example.quick_mart.features.home.repo.HomeRepositoryImp
 import com.example.quick_mart.features.home.view.AllProductsScreen
 import com.example.quick_mart.features.home.view.HomeScreen
@@ -141,7 +141,7 @@ fun DraggableFloatingButton() {
 
         FloatingActionButton(
             onClick = {
-                val intent = Intent(context, CheckoutScreenActivity()::class.java)
+                val intent = Intent(context, CheckoutActivity()::class.java)
                 context.startActivity(intent)
             },
             modifier = Modifier

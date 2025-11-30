@@ -14,7 +14,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.QuickMart">
         <activity
-            android:name=".features.checkout.CheckoutScreenActivity"
+            android:name=".features.checkout.view.CheckoutActivity"
             android:exported="false"
             android:label="@string/title_activity_checkout_screen"
             android:theme="@style/Theme.QuickMart" />
@@ -29,7 +29,7 @@
             android:label="@string/title_activity_search_screen"
             android:theme="@style/Theme.QuickMart" />
         <activity
-            android:name=".features.Detailshome.SucessBaymentActivity"
+            android:name=".features.checkout.view.SuccessPaymentActivity"
             android:exported="false"
             android:label="@string/title_activity_sucess_bayment"
             android:theme="@style/Theme.QuickMart" />
@@ -39,7 +39,7 @@
             android:label="@string/title_activity_sucess_bayment"
             android:theme="@style/Theme.QuickMart" />
         <activity
-            android:name=".features.Detailshome.BaymentActivity"
+            android:name=".features.checkout.view.PaymentActivity"
             android:exported="false"
             android:label="@string/title_activity_bayment"
             android:theme="@style/Theme.QuickMart" />
