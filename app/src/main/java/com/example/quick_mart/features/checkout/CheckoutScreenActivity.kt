@@ -7,10 +7,8 @@ import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.tooling.preview.Preview
 import com.example.quick_mart.features.checkout.ui.theme.QuickMartTheme
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
@@ -39,7 +37,6 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.example.quick_mart.Detailshome.BaymentActivity
 import com.example.quick_mart.MainActivity
 
 

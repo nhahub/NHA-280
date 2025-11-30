@@ -1,4 +1,4 @@
-package com.example.quick_mart.Detailshome
+package com.example.quick_mart.features.Detailshome
 
 import android.content.Intent
 import android.os.Bundle
@@ -31,11 +31,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.quick_mart.Detailshome.ui.theme.QuickMartTheme
 import androidx.compose.material3.*
-import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.text.*
-import androidx.compose.runtime.*
 import androidx.compose.ui.platform.LocalContext
 
 

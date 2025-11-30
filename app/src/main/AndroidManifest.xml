@@ -29,7 +29,7 @@
             android:label="@string/title_activity_search_screen"
             android:theme="@style/Theme.QuickMart" />
         <activity
-            android:name=".Detailshome.SucessBaymentActivity"
+            android:name=".features.Detailshome.SucessBaymentActivity"
             android:exported="false"
             android:label="@string/title_activity_sucess_bayment"
             android:theme="@style/Theme.QuickMart" />
@@ -39,7 +39,7 @@
             android:label="@string/title_activity_sucess_bayment"
             android:theme="@style/Theme.QuickMart" />
         <activity
-            android:name=".Detailshome.BaymentActivity"
+            android:name=".features.Detailshome.BaymentActivity"
             android:exported="false"
             android:label="@string/title_activity_bayment"
             android:theme="@style/Theme.QuickMart" />

@@ -26,7 +26,7 @@ import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
-import com.example.quick_mart.Detailshome.BaymentActivity
+import com.example.quick_mart.features.Detailshome.BaymentActivity
 import com.example.quick_mart.features.checkout.CheckoutScreenActivity
 import com.example.quick_mart.features.home.viewmodel.HomeViewModel
 

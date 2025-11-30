@@ -1,6 +1,5 @@
-package com.example.quick_mart.Detailshome.ui.theme
+package com.example.quick_mart.features.Detailshome.ui.theme
 
-import android.app.Activity
 import android.os.Build
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material3.MaterialTheme

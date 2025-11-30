@@ -1,4 +1,4 @@
-package com.example.quick_mart.Detailshome.ui.theme
+package com.example.quick_mart.features.Detailshome.ui.theme
 
 import androidx.compose.ui.graphics.Color
 

@@ -1,4 +1,4 @@
-package com.example.quick_mart.Detailshome
+package com.example.quick_mart.features.Detailshome
 
 import android.util.Log
 import androidx.lifecycle.LiveData
