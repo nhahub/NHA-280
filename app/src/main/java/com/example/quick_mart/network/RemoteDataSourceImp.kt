@@ -1,6 +1,5 @@
 package com.example.quick_mart.network
 
-import com.example.quick_mart.common.UiState
 import com.example.quick_mart.dto.Category
 import com.example.quick_mart.dto.Product
 import com.example.quick_mart.network.API.apiService

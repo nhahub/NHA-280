@@ -8,7 +8,7 @@ import com.example.quick_mart.dto.Category
 import com.example.quick_mart.dto.Product
 import com.example.quick_mart.features.categories.repo.CategoriesRepository
 import kotlinx.coroutines.launch
-import com.example.quick_mart.features.home.repo.HomeRepository
+
 class CategoriesViewModel(
     private val repository: CategoriesRepository,
 ) : ViewModel() {

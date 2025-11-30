@@ -7,7 +7,7 @@ import com.example.quick_mart.network.RemoteDataSource
 import retrofit2.Response
 import kotlinx.coroutines.withContext
 import kotlinx.coroutines.Dispatchers
-import android.util.Log
+
 class CategoriesRepositoryImp(
     private val remoteDataSource: RemoteDataSource,
     private val localDataSource: LocalDataSource

@@ -16,7 +16,6 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -126,8 +125,9 @@ fun HomeScreenContent(
                         fontWeight = FontWeight.SemiBold
                     )
                 }
+                val displayCategories = categories.take(5)
 
-                if (categories.isEmpty() && !isLoading) {
+                if (displayCategories.isEmpty() && !isLoading) {
                     Box(
                         modifier = Modifier
                             .fillMaxWidth()
@@ -144,7 +144,7 @@ fun HomeScreenContent(
                         modifier = Modifier.padding(horizontal = 16.dp),
                         horizontalArrangement = Arrangement.spacedBy(16.dp)
                     ) {
-                        items(categories) { category ->
+                        items(displayCategories) { category ->
                             CategoryItem(
                                 category = category,
                                 onClick = { onCategoryClick(category) }

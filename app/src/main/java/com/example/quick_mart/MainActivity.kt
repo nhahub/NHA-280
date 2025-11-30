@@ -21,6 +21,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.toRoute
 import com.example.quick_mart.db.LocalDataSourceImp
+import com.example.quick_mart.features.categories.ui.CategoriesScreen
 import com.example.quick_mart.features.checkout.CheckoutScreenActivity
 import com.example.quick_mart.features.home.repo.HomeRepositoryImp
 import com.example.quick_mart.features.home.view.AllProductsScreen
@@ -56,7 +57,7 @@ class MainActivity : ComponentActivity() {
                         HomeScreen(
                             viewModel = viewModel,
                             onSeeAllCategoriesClick = {
-                                // navController.navigate(Routes.Categories(null))
+                                navController.navigate(Routes.Categories)
                             },
                             onSeeAllProductsClick = {  // NEW CALLBACK
                                 navController.navigate(Routes.AllProducts)
@@ -65,7 +66,7 @@ class MainActivity : ComponentActivity() {
                                 navController.navigate(Routes.Details(product.id))
                             },
                             onCategoryClick = { category ->
-                                navController.navigate(Routes.Categories(category.id ?: 0))
+                                navController.navigate(Routes.Category(category.id ?: 0))
                             },
                             onRetry = { viewModel.getResponseAndCache() }
                         )
@@ -98,8 +99,8 @@ class MainActivity : ComponentActivity() {
                         )
                     }
 
-                    composable<Routes.Categories> { backStackEntry ->
-                        val routeArgs: Routes.Categories = backStackEntry.toRoute()
+                    composable<Routes.Category> { backStackEntry ->
+                        val routeArgs: Routes.Category = backStackEntry.toRoute()
                         val categoryId = routeArgs.categoryId
 
                         ProductsForCategoryScreen(
@@ -108,6 +109,17 @@ class MainActivity : ComponentActivity() {
                             onBackClick = { navController.popBackStack() },
                             onProductClick = { product ->
                                 navController.navigate(Routes.Details(product.id))
+                            }
+                        )
+                    }
+
+                    composable<Routes.Categories> {
+                        CategoriesScreen(
+                            onBackClick = {
+                                navController.popBackStack()
+                            },
+                            onCategoryClick = { category ->
+                                navController.navigate(Routes.Category(category.id ?: 0))
                             }
                         )
                     }
@@ -121,8 +133,8 @@ class MainActivity : ComponentActivity() {
 @Composable
 fun DraggableFloatingButton() {
 
-    var offsetX by remember { mutableStateOf(300f) }   // start position X
-    var offsetY by remember { mutableStateOf(1200f) }  // start position Y
+    var offsetX by remember { mutableStateOf(900f) }   // start position X
+    var offsetY by remember { mutableStateOf(2150f) }  // start position Y
     val context = LocalContext.current
 
     Box(modifier = Modifier.fillMaxSize()) {

@@ -1,6 +1,5 @@
 package com.example.quick_mart.features.home.repo
 
-import com.example.quick_mart.common.UiState
 import com.example.quick_mart.dto.Category
 import com.example.quick_mart.dto.Product
 import retrofit2.Response

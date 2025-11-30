@@ -1,7 +1,5 @@
 package com.example.quick_mart
 
-import com.example.quick_mart.dto.Category
-import com.example.quick_mart.dto.Product
 import kotlinx.serialization.Serializable
 
 sealed interface Routes {
@@ -13,7 +11,10 @@ sealed interface Routes {
     data class Details( val productId: Int):Routes
 
     @Serializable
-    data class Categories(val categoryId: Int):Routes
+    data class Category(val categoryId: Int):Routes
+
+    @Serializable
+    object Categories:Routes
 
     @Serializable
     object AllProducts : Routes
